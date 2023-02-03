@@ -12,6 +12,7 @@ export interface TableMetaData {
 }
 
 export interface TableScheme<T> {
+  id: string
   headerModel: string;
   bodyModel: ((tableData: T) => JSX.Element) | null;
 }

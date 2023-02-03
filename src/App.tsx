@@ -1,34 +1,15 @@
-import React from "react";
-import { useGetTableColumns } from "./metamodel";
+import React, { useEffect } from "react";
 import { carsData, carsTableMetaData } from "./__mock__";
 
-function App() {
-  const { columns } = useGetTableColumns<typeof carsData[0]>(carsTableMetaData);
+import { useGetTableColumns } from "./metamodel";
+import { BaseMetaTable } from "./components";
+
+const App = () => {
+  const { columns } = useGetTableColumns<typeof carsData[0]>({ metaData: carsTableMetaData });
+
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            {columns.map((columns) => {
-              return <th key={columns.headerModel}>{columns.headerModel}</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {carsData.map((rowData) => {
-            return (
-              <tr>
-                {columns.map((column) => {
-                  return (
-                    <td>{column.bodyModel && column.bodyModel(rowData)}</td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <BaseMetaTable<typeof carsData[0]> columns={columns} data={carsData} />
   );
-}
-export { App };
+};
+
+export { BaseMetaTable, useGetTableColumns, App };

@@ -1,21 +1,30 @@
 import { TableMetaData, TableScheme } from "../types";
 import { BaseFields } from "../components";
+import { useEffect, useMemo } from "react";
 
 const fieldsMap = Object.assign({}, BaseFields);
 
-const tableMetaModel = <T extends {}>(
-  tableMetaData: TableMetaData
-): TableScheme<T>[] => {
-  return Object.entries(tableMetaData).map(([columnName, cellSettings]) => ({
-    headerModel: columnName,
-    bodyModel: getColumnCell<T>(cellSettings),
-  }));
-};
+interface TableMetaModelProps {
+  metaData: TableMetaData;
+  locale?: Record<string, string>;
+}
 
-export const useGetTableColumns = <T extends {}>(metaData: TableMetaData) => {
-  return { 
-    columns: tableMetaModel<T>(metaData),
-  };
+export const useGetTableColumns = <T extends {}>(
+  props: TableMetaModelProps
+): {
+  columns: TableScheme<T>[]
+} => {
+  const { locale = {}, metaData } = props;
+  return useMemo(
+    () => ({
+      columns: Object.entries(metaData).map(([columnName, cellSettings]) => ({
+        id: columnName,
+        headerModel: locale[columnName] || columnName,
+        bodyModel: getColumnCell<T>(cellSettings),
+      })),
+    }),
+    []
+  );
 };
 
 const getColumnCell = <T extends {}>(cellSettings: TableMetaData["string"]) => {
