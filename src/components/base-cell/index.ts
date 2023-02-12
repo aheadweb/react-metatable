@@ -1,5 +1,5 @@
-import { TextCell } from "./Text";
-import { NumberCell } from "./Number";
+import { TextCell } from "./text";
+import { NumberCell } from "./number";
 
 import { BaseCellTypes } from "../../types";
 
