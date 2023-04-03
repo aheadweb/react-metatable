@@ -1,16 +1,16 @@
 export const carsData = [
   {
-    carTitle: "SpaceLess C",
+    carTitle: "SpaceLess A",
     modelName: "KhanSpaceShip",
-    price: 10,
+    price: 1,
+  },
+  {
+    carTitle: "SpaceLess G",
+    modelName: "KhanSpaceShip",
+    price: 33,
   },
   {
     carTitle: "SpaceLess D",
-    modelName: "KhanSpaceShip",
-    price: 15,
-  },
-  {
-    carTitle: "SpaceLess E",
     modelName: "KhanSpaceShip",
     price: 20,
   },

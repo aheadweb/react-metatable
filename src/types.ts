@@ -7,13 +7,21 @@ export type BaseCell = {
   type: BaseCellTypes;
 };
 
+export type ColumnFunctionalSettings = {
+  sortable?: boolean;
+};
+
+export type CellType = BaseCell;
+
 export interface TableMetaData {
-  [columnName: string]: BaseCell;
+  [columnName: string]: {
+    cell: CellType;
+  } & ColumnFunctionalSettings;
 }
 
 export interface TableScheme<T> {
-  id: string
-  headerModel: string;
+  id: string;
+  headerModel: JSX.Element | null | string;
   bodyModel: ((tableData: T) => JSX.Element) | null;
 }
 
