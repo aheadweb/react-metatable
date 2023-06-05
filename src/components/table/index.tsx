@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { TableScheme } from "../../types";
 import { TableStateProvider, useGetTableState } from "../../providers";
-import { SORT_STATUSES } from "./withSortableFunctional";
+import { baseTableColumnSort } from "./withSortableFunctional";
 
 interface ComponentWidthChildren {
   children?: React.ReactNode;
 }
 
-interface TableProps<T> {
+interface TableProps<T extends Record<string, any>> {
   columns: TableScheme<T>[];
   data: T[];
   className?: string;
@@ -31,34 +31,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
 }: TableProps<T>) => {
   const { className } = rest;
   const { state } = useGetTableState();
-  const [tableData, setTableData] = useState([...data]);
-
-  useEffect(() => {
-    const [sortConfig] = Object.entries(state.sortable);
-    if (!sortConfig) return;
-
-    const [propName, sortStatus] = sortConfig;
-    const pN = propName as keyof typeof data[0];
-
-    if (sortStatus === SORT_STATUSES.DEFAULT) {
-      setTableData([...data]);
-      return;
-    }
-
-    const newData = [
-      ...tableData.sort((a, b) => {
-        const valA = a[pN];
-        const valB = b[pN];
-        if (valA > valB) return 1;
-        if (valA < valB) return -1;
-        return 0;
-      }),
-    ];
-
-    setTableData(
-      sortStatus === SORT_STATUSES.ASC ? newData : newData.reverse()
-    );
-  }, [state.sortable]);
+  const actualData = baseTableColumnSort(state, data);
 
   return (
     <table className={`meta-table ${className}`}>
@@ -70,7 +43,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
         </TableRow>
       </thead>
       <tbody className="meta-table__body">
-        {data.map((tableRow, i) => {
+        {actualData.map((tableRow, i) => {
           return (
             <TableRow key={`${tableRow?.id}${i}`}>
               {columns.map((columns) => (
@@ -88,10 +61,12 @@ const BaseMetaTable = <T extends Record<string, any>>({
 
 const BaseMetaTableWithStateProvider = <T extends Record<string, any>>(
   props: TableProps<T>
-) => (
-  <TableStateProvider>
-    <BaseMetaTable {...props} />
-  </TableStateProvider>
-);
+) => {
+  return (
+    <TableStateProvider>
+      <BaseMetaTable {...props} />
+    </TableStateProvider>
+  );
+};
 
 export { BaseMetaTableWithStateProvider as BaseMetaTable };

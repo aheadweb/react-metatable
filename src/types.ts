@@ -19,7 +19,7 @@ export interface TableMetaData {
   } & ColumnFunctionalSettings;
 }
 
-export interface TableScheme<T> {
+export interface TableScheme<T extends Record<string, any>> {
   id: string;
   headerModel: JSX.Element | null | string;
   bodyModel: ((tableData: T) => JSX.Element) | null;

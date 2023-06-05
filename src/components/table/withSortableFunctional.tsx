@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useGetTableState } from "../../providers";
+import { TableState, useGetTableState } from "../../providers";
 
 export const SORT_STATUSES = {
   DESC: "DESC",
@@ -18,6 +18,30 @@ const getSortableKey = (prevStatus: string) => {
   if (prevStatus === SORT_STATUSES.ASC) return SORT_STATUSES.DESC;
   if (prevStatus === SORT_STATUSES.DESC) return SORT_STATUSES.DEFAULT;
   return SORT_STATUSES.ASC;
+};
+
+export const baseTableColumnSort = <T extends Record<string, any>>(
+  state: TableState,
+  data: T[]
+) => {
+  const [sortConfig] = Object.entries(state.sortable);
+  if (!sortConfig) return data;
+
+  const [propName, sortStatus] = sortConfig;
+
+  if (sortStatus === SORT_STATUSES.DEFAULT) return data;
+
+  const newData = [
+    ...data.sort((a, b) => {
+      const valA = a[propName];
+      const valB = b[propName];
+      if (valA > valB) return 1;
+      if (valA < valB) return -1;
+      return 0;
+    }),
+  ];
+
+  return sortStatus === SORT_STATUSES.ASC ? newData : newData.reverse();
 };
 
 const WithSortableFunction = ({

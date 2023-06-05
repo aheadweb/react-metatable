@@ -41,6 +41,13 @@ export const useGetTableColumns = <T extends {}>(
   );
 };
 
+/**
+const HeaderCellModel = Utils.pipeline(
+  columnsSetting.sortable ? WithSortableFunction : (a) => a,
+  columnsSetting.filter ? WithSortableFunction : (a) => a
+)(cellValue);
+
+ */
 const getTableHeaderCell = (
   id: string,
   cellValue: string,

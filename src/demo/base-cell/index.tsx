@@ -3,7 +3,7 @@ import { useGetTableColumns } from "../../metamodel";
 import { BaseMetaTable } from "../../components";
 
 export const BaseCellExample = () => {
-  const { columns } = useGetTableColumns<typeof carsData[0]>({
+  const { columns } = useGetTableColumns<(typeof carsData)[0]>({
     metaData: carsTableMetaData,
     locale: carsDataLocale.ru,
   });

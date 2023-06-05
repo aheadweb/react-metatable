@@ -7,8 +7,10 @@ const DEFAULT_STATE: {
   sortable: {},
 };
 
+export type TableState = typeof DEFAULT_STATE
+
 export const TableState = React.createContext<{
-  state: typeof DEFAULT_STATE;
+  state: TableState;
   setState: React.Dispatch<React.SetStateAction<typeof DEFAULT_STATE>>;
 }>(null!);
 
@@ -20,15 +22,15 @@ export const TableStateProvider = ({
   children: React.ReactNode;
 }) => {
   const [state, setState] = useState(DEFAULT_STATE);
-  const memoState = useMemo(
-    () => ({
-      state,
-      setState,
-    }),
-    [state]
-  );
 
   return (
-    <TableState.Provider value={memoState}>{children}</TableState.Provider>
+    <TableState.Provider
+      value={{
+        state,
+        setState,
+      }}
+    >
+      {children}
+    </TableState.Provider>
   );
 };
