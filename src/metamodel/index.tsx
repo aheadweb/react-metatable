@@ -7,6 +7,7 @@ import {
 import { BaseFields } from "../components";
 import { useMemo } from "react";
 import { WithSortableFunction } from "../components/table/withSortableFunctional";
+import { Utils } from "../utils";
 
 const fieldsMap = Object.assign({}, BaseFields);
 
@@ -41,27 +42,16 @@ export const useGetTableColumns = <T extends {}>(
   );
 };
 
-/**
-const HeaderCellModel = Utils.pipeline(
-  columnsSetting.sortable ? WithSortableFunction : (a) => a,
-  columnsSetting.filter ? WithSortableFunction : (a) => a
-)(cellValue);
-
- */
 const getTableHeaderCell = (
   id: string,
   cellValue: string,
   columnsSetting: ColumnFunctionalSettings
-) => {
-  const Component = () =>
-    columnsSetting.sortable ? (
-      <WithSortableFunction id={id} cellValue={cellValue} />
-    ) : (
-      <>{cellValue}</>
-    );
-  if (!Component) return null;
-  return <Component />;
-};
+) =>
+  Utils.pipeline(
+    columnsSetting.sortable
+      ? (val: string) => <WithSortableFunction id={id} cellValue={val} />
+      : (a: any) => <>{a}</>
+  )(cellValue) as unknown as JSX.Element;
 
 const getColumnCell = <T extends Record<string, any>>(
   columnName: string,
