@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { TableState, useGetTableState } from "../../providers";
+import { TableState, useGetTableState } from "../../../providers";
 
 export const SORT_STATUSES = {
   DESC: "DESC",
@@ -20,7 +20,7 @@ const getSortableKey = (prevStatus: string) => {
   return SORT_STATUSES.ASC;
 };
 
-export const baseTableColumnSort = <T extends Record<string, any>>(
+export const sortTableData = <T extends Record<string, any>>(
   state: TableState,
   data: T[]
 ) => {
@@ -28,7 +28,6 @@ export const baseTableColumnSort = <T extends Record<string, any>>(
   if (!sortConfig) return data;
 
   const [propName, sortStatus] = sortConfig;
-
   if (sortStatus === SORT_STATUSES.DEFAULT) return data;
 
   const newData = [
@@ -44,7 +43,7 @@ export const baseTableColumnSort = <T extends Record<string, any>>(
   return sortStatus === SORT_STATUSES.ASC ? newData : newData.reverse();
 };
 
-const WithSortableFunction = ({
+const WithSortFeature = ({
   cellValue,
   id,
 }: {
@@ -64,8 +63,7 @@ const WithSortableFunction = ({
     }));
   }, []);
 
-  const status = state.sortable[id] as unknown as keyof typeof SORT_STATUSES;
-
+  const status = state.sortable[id];
   return (
     <>
       <span onClick={toggleSortStatus}>
@@ -76,6 +74,5 @@ const WithSortableFunction = ({
   );
 };
 
-const Memo = React.memo(WithSortableFunction);
-
-export { Memo as WithSortableFunction };
+const Memo = React.memo(WithSortFeature);
+export { Memo as WithSortFeature };

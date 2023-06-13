@@ -1,28 +1,13 @@
-import React from "react";
-
-import { TableScheme } from "../../types";
-import { TableStateProvider, useGetTableState } from "../../providers";
-import { baseTableColumnSort } from "./withSortableFunctional";
-
-interface ComponentWidthChildren {
-  children?: React.ReactNode;
-}
+import { TableScheme } from "../types";
+import { TableStateProvider, useGetTableState } from "../providers";
+import { TableBodyCell, TableHeaderCell, TableRow } from "./components";
+import { sortTableData } from "./features/sort";
 
 interface TableProps<T extends Record<string, any>> {
   columns: TableScheme<T>[];
   data: T[];
   className?: string;
 }
-
-export const TableRow: React.FC<ComponentWidthChildren> = ({ children }) => (
-  <tr className="table-row">{children}</tr>
-);
-export const TableBodyCell: React.FC<ComponentWidthChildren> = ({
-  children,
-}) => <td className="table-body-cell">{children}</td>;
-export const TableHeaderCell: React.FC<ComponentWidthChildren> = ({
-  children,
-}) => <th className="table-header-cell">{children}</th>;
 
 const BaseMetaTable = <T extends Record<string, any>>({
   columns,
@@ -31,7 +16,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
 }: TableProps<T>) => {
   const { className } = rest;
   const { state } = useGetTableState();
-  const actualData = baseTableColumnSort(state, data);
+  const actualData = sortTableData(state, data);
 
   return (
     <table className={`meta-table ${className}`}>
@@ -61,12 +46,10 @@ const BaseMetaTable = <T extends Record<string, any>>({
 
 const BaseMetaTableWithStateProvider = <T extends Record<string, any>>(
   props: TableProps<T>
-) => {
-  return (
-    <TableStateProvider>
-      <BaseMetaTable {...props} />
-    </TableStateProvider>
-  );
-};
+) => (
+  <TableStateProvider>
+    <BaseMetaTable {...props} />
+  </TableStateProvider>
+);
 
 export { BaseMetaTableWithStateProvider as BaseMetaTable };

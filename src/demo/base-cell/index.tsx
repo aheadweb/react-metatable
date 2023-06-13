@@ -1,6 +1,6 @@
 import { carsData, carsTableMetaData, carsDataLocale } from "../../__mock__";
 import { useGetTableColumns } from "../../metamodel";
-import { BaseMetaTable } from "../../components";
+import { BaseMetaTable } from "../../table";
 
 export const BaseCellExample = () => {
   const { columns } = useGetTableColumns<(typeof carsData)[0]>({
