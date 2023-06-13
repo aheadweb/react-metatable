@@ -1,4 +1,4 @@
 import { useGetTableColumns } from "./metamodel";
-import { BaseMetaTable } from "./components";
+import { BaseMetaTable } from "./table";
 
 export { BaseMetaTable, useGetTableColumns };
