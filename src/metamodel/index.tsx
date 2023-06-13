@@ -9,7 +9,7 @@ import {
 import { Utils } from "../utils";
 import { FIELDS_MAP } from "../cells";
 
-import { TableSortFeature } from "../table/features";
+import { WithSortFeature } from "../table/features";
 
 interface TableMetaModelProps {
   metaData: TableMetaData;
@@ -51,9 +51,7 @@ const getTableHeaderCell = (
 ) =>
   Utils.pipeline(
     columnsSetting.sortable
-      ? (val: string) => (
-          <TableSortFeature.WithSortFeature id={id} cellValue={val} />
-        )
+      ? (val: string) => <WithSortFeature id={id} cellValue={val} />
       : identity
   )(cellValue) as unknown as JSX.Element;
 

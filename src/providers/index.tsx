@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
-import { TableSortFeature } from "../table/features";
-
-const SORT_STATUSES = TableSortFeature.SORT_STATUSES;
+import { SORT_STATUSES } from "../table/features";
 
 const DEFAULT_STATE: {
   sortable: Record<string, keyof typeof SORT_STATUSES>;
