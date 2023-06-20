@@ -3,8 +3,10 @@ import { SORT_STATUSES } from "../table/features";
 
 const DEFAULT_STATE: {
   sortable: Record<string, keyof typeof SORT_STATUSES>;
+  filter: Record<string, string | number>;
 } = {
   sortable: {},
+  filter: {},
 };
 
 export type TableState = typeof DEFAULT_STATE;

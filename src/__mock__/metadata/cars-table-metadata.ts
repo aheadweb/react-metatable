@@ -2,6 +2,9 @@ import { TableMetaData, BaseCellTypes } from "../../types";
 
 export const carsTableMetaData: TableMetaData = {
   carTitle: {
+    filter: {
+      type: "text",
+    },
     cell: {
       type: BaseCellTypes.text,
     },

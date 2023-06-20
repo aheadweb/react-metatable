@@ -7,8 +7,32 @@ export type BaseCell = {
   type: BaseCellTypes;
 };
 
+export enum FilterTypes {
+  text = "text",
+  enum = "enum",
+  reference = "reference",
+}
+
+type FilterText = {
+  type: FilterTypes.text;
+};
+
+type FilterEnum = {
+  type: FilterTypes.enum;
+  options: (string | number)[];
+};
+
+type FilterReference = {
+  type: FilterTypes.reference;
+  idPropName: string;
+  fetchTo: string;
+};
+
+export type ColumnFilterSettings = FilterText | FilterEnum | FilterReference;
+
 export type ColumnFunctionalSettings = {
   sortable?: boolean;
+  filter?: ColumnFilterSettings;
 };
 
 export type CellType = BaseCell;
