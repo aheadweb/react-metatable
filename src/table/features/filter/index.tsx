@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { TableState, useGetTableState } from "../../../providers";
-import { ColumnFilterSettings, FilterTypes } from "../../../types";
 
-const FILTER_BODY_MAP = {
-  [FilterTypes.text]: TextFilterDialog,
-  [FilterTypes.enum]: TextFilterDialog,
-  [FilterTypes.reference]: TextFilterDialog,
-};
+import { TableState } from "../../../providers";
+import { ColumnFilterSettings } from "../../../types";
+import { FilterDialogFactory } from "./dialogs";
+
+import "./index.css";
+
+const eventPreventDefault = (e: React.MouseEvent) => e.preventDefault();
 
 const WithFilterFeature = ({
   id,
@@ -17,57 +17,29 @@ const WithFilterFeature = ({
   cellValue: string;
   filterType: ColumnFilterSettings;
 }) => {
-  const { state, setState } = useGetTableState();
   const [isOpen, setIsOpen] = useState(false);
   if (!cellValue) return null;
 
-  const [filteredColumnName] = Object.keys(state.filter);
-  const hasFilerOnColumn = filteredColumnName === id;
-
-  const clearFilter = () => {
-    if (!hasFilerOnColumn) return;
-    setState((prev) => ({ ...prev, filter: {} }));
-  };
-
-  const toggleFilterBody = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const toggleFilterBody = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const FilterBody = FILTER_BODY_MAP[filterType.type];
-
   return (
-    <details open={isOpen}>
-      <summary onClick={toggleFilterBody}>
-        {cellValue}
-        <span onClick={clearFilter}>{!hasFilerOnColumn ? "≡" : "x"}</span>
+    <details className="filter-cell" open={isOpen}>
+      <summary onClick={eventPreventDefault} className="filter-cell__content">
+        <span className="filter-cell__value">{cellValue}</span>
+        <span onClick={toggleFilterBody} className="filter-cell__button">
+          {!isOpen ? "≡" : "x"}
+        </span>
       </summary>
-      {isOpen && <FilterBody id={id} />}
+      {isOpen && (
+        <div className="filter-cell__body">
+          <FilterDialogFactory id={id} filterType={filterType.type} />
+        </div>
+      )}
     </details>
   );
 };
-
-function TextFilterDialog({ id }: { id: string }) {
-  const { setState } = useGetTableState();
-  const [inputValue, setInputValue] = useState<string>("");
-
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setState((prev) => ({ ...prev, filter: { [id]: inputValue } }));
-  };
-
-  return (
-    <form onSubmit={handleFormSubmit}>
-      <input
-        type="text"
-        value={inputValue}
-        placeholder="Enter text"
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button type="submit">search</button>
-    </form>
-  );
-}
 
 export function filterTableData<T extends Record<string, any>>(
   state: TableState,

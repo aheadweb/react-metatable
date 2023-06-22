@@ -1,0 +1,29 @@
+.filter-cell {
+  position: relative;
+  user-select: none;
+}
+
+.filter-cell .filter-cell__body {
+  position: absolute;
+}
+
+.filter-cell .filter-cell__header {
+  list-style: none;
+}
+
+.filter-cell .filter-cell__content::-webkit-details-marker {
+  display: none;
+}
+
+.filter-cell .filter-cell__content {
+  display: flex;
+  align-items: center;
+}
+
+.filter-cell .filter-cell__button {
+  cursor: pointer;
+}
+
+.filter-cell .filter-cell__value {
+  margin-right: 10px;
+}

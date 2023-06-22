@@ -65,12 +65,12 @@ const WithSortFeature = ({
 
   const status = state.sortable[id];
   return (
-    <>
-      <span onClick={toggleSortStatus}>
-        {cellValue}
+    <span className="sort-cell" onClick={toggleSortStatus}>
+      <span className="sort-cell__value">{cellValue}</span>
+      <span className="sort-cell__button">
         {ARROW_MAP[status] || ARROW_MAP.DEFAULT}
       </span>
-    </>
+    </span>
   );
 };
 
