@@ -5,15 +5,15 @@ interface ComponentWidthChildren {
 }
 
 const TableRow: React.FC<ComponentWidthChildren> = ({ children }) => (
-  <tr className="table-row">{children}</tr>
+  <tr className="meta-table__row">{children}</tr>
 );
 
 const TableBodyCell: React.FC<ComponentWidthChildren> = ({ children }) => (
-  <td className="table-body-cell">{children}</td>
+  <td className="meta-table__body-cell">{children}</td>
 );
 
 const TableHeaderCell: React.FC<ComponentWidthChildren> = ({ children }) => (
-  <th className="table-header-cell">{children}</th>
+  <th className="meta-table__header-cell">{children}</th>
 );
 
 export { TableRow, TableBodyCell, TableHeaderCell };

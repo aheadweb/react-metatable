@@ -1,6 +1,5 @@
 .filter-cell {
   position: relative;
-  user-select: none;
 }
 
 .filter-cell .filter-cell__body {
@@ -25,5 +24,10 @@
 }
 
 .filter-cell .filter-cell__value {
-  margin-right: 10px;
+  margin-right: 5px;
+}
+
+.filter-cell .filter-cell__button {
+  width: 15px;
+  height: 15px;
 }

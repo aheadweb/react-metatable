@@ -1,5 +1,7 @@
 import React, { useCallback } from "react";
 import { TableState, useGetTableState } from "../../../providers";
+import "./index.css";
+import { SortAskIcon, SortDescIcon, SortIcon } from "./icons";
 
 export const SORT_STATUSES = {
   DESC: "DESC",
@@ -8,9 +10,9 @@ export const SORT_STATUSES = {
 } as const;
 
 const ARROW_MAP = {
-  [SORT_STATUSES.DESC]: "↑",
-  [SORT_STATUSES.ASC]: "↓",
-  [SORT_STATUSES.DEFAULT]: "⇊",
+  [SORT_STATUSES.DESC]: <SortDescIcon />,
+  [SORT_STATUSES.ASC]: <SortAskIcon />,
+  [SORT_STATUSES.DEFAULT]: <SortIcon />,
 };
 
 const getSortableKey = (prevStatus: string) => {
@@ -30,15 +32,14 @@ export const sortTableData = <T extends Record<string, any>>(
   const [propName, sortStatus] = sortConfig;
   if (sortStatus === SORT_STATUSES.DEFAULT) return data;
 
-  const newData = [
-    ...data.sort((a, b) => {
-      const valA = a[propName];
-      const valB = b[propName];
-      if (valA > valB) return 1;
-      if (valA < valB) return -1;
-      return 0;
-    }),
-  ];
+  const cloneData = [...data];
+  const newData = cloneData.sort((a, b) => {
+    const valA = a[propName];
+    const valB = b[propName];
+    if (valA > valB) return 1;
+    if (valA < valB) return -1;
+    return 0;
+  });
 
   return sortStatus === SORT_STATUSES.ASC ? newData : newData.reverse();
 };
@@ -64,10 +65,11 @@ const WithSortFeature = ({
   }, []);
 
   const status = state.sortable[id];
+  
   return (
-    <span className="sort-cell" onClick={toggleSortStatus}>
+    <span className="sort-cell">
       <span className="sort-cell__value">{cellValue}</span>
-      <span className="sort-cell__button">
+      <span className="sort-cell__button" onClick={toggleSortStatus}>
         {ARROW_MAP[status] || ARROW_MAP.DEFAULT}
       </span>
     </span>

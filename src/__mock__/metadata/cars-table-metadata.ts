@@ -1,10 +1,11 @@
-import { TableMetaData, BaseCellTypes } from "../../types";
+import { TableMetaData, BaseCellTypes, FilterTypes } from "../../types";
 
 export const carsTableMetaData: TableMetaData = {
   carTitle: {
     filter: {
-      type: "text",
+      type: FilterTypes.text,
     },
+    sortable: true,
     cell: {
       type: BaseCellTypes.text,
     },

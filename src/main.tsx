@@ -6,6 +6,15 @@ const rootApp = document.getElementById("root") as HTMLElement;
 
 ReactDOM.createRoot(rootApp).render(
   <React.StrictMode>
-    <BaseCellExample />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h1>Table with basic cells and features</h1>
+      <BaseCellExample />
+    </div>
   </React.StrictMode>
 );

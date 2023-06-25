@@ -5,6 +5,7 @@ import { ColumnFilterSettings } from "../../../types";
 import { FilterDialogFactory } from "./dialogs";
 
 import "./index.css";
+import { CloseFilterIcon, OpenFilterIcon } from "./icons";
 
 const eventPreventDefault = (e: React.MouseEvent) => e.preventDefault();
 
@@ -29,7 +30,7 @@ const WithFilterFeature = ({
       <summary onClick={eventPreventDefault} className="filter-cell__content">
         <span className="filter-cell__value">{cellValue}</span>
         <span onClick={toggleFilterBody} className="filter-cell__button">
-          {!isOpen ? "≡" : "x"}
+          {!isOpen ? <OpenFilterIcon /> : <CloseFilterIcon />}
         </span>
       </summary>
       {isOpen && (

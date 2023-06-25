@@ -1,0 +1,17 @@
+.meta-table {
+  border: 1px solid #e7e7e7;
+}
+
+.meta-table .meta-table__header-cell {
+  padding: 8px 5px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.meta-table .meta-table__body-cell {
+  padding: 10px 5px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.meta-table .meta-table__row:hover .meta-table__body-cell {
+  background-color: #f6f6f6;
+}

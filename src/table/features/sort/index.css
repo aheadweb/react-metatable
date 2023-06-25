@@ -1,0 +1,17 @@
+.sort-cell {
+  display: flex;
+  align-items: center;
+}
+
+.sort-cell .sort-cell__value {
+  margin-right: 5px;
+}
+
+.sort-cell .sort-cell__button {
+  cursor: pointer;
+}
+
+.sort-cell .sort-cell__button {
+  height: 15px;
+  width: 15px;
+}

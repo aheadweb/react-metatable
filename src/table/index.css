@@ -1,0 +1,6 @@
+.meta-table {
+  border-collapse: collapse;
+}
+.meta-table__header-cell {
+  user-select: none;
+}
