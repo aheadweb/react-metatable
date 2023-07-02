@@ -1,36 +1,27 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { ColumnFilterSettings } from "../../../../types";
 
-export const TextFilterDialog = ({
-  filterEnable,
-  clearFilter,
+export const TextFilter = ({
   setFilter,
 }: {
-  filterEnable: boolean;
-  clearFilter: () => void;
+  filterSetting: ColumnFilterSettings,
   setFilter: (val: string) => void;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!inputValue) return;
-    setFilter(inputValue);
+  const setFilterValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (!value) return;
+    setInputValue(value);
+    setFilter(value);
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <input
-        type="text"
-        value={inputValue}
-        placeholder="Enter text"
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button disabled={!inputValue} type="submit">
-        search
-      </button>
-      <button disabled={!filterEnable} onClick={clearFilter}>
-        clear
-      </button>
-    </form>
+    <input
+      type="text"
+      value={inputValue}
+      placeholder="Enter text"
+      onChange={setFilterValue}
+    />
   );
 };

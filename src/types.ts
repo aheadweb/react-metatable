@@ -8,22 +8,22 @@ export type BaseCell = {
 };
 
 export enum FilterTypes {
-  text = "text",
-  enum = "enum",
-  reference = "reference",
+  Text = "text",
+  Enum = "enum",
+  Reference = "reference",
 }
 
-type FilterText = {
-  type: FilterTypes.text;
+export type FilterText = {
+  type: FilterTypes.Text;
 };
 
-type FilterEnum = {
-  type: FilterTypes.enum;
+export type FilterEnum = {
+  type: FilterTypes.Enum;
   options: (string | number)[];
 };
 
-type FilterReference = {
-  type: FilterTypes.reference;
+export type FilterReference = {
+  type: FilterTypes.Reference;
   idPropName: string;
   fetchTo: string;
 };

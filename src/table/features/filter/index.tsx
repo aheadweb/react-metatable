@@ -11,12 +11,12 @@ const eventPreventDefault = (e: React.MouseEvent) => e.preventDefault();
 
 const WithFilterFeature = ({
   id,
-  filterType,
+  filterSetting,
   cellValue,
 }: {
   id: string;
   cellValue: string;
-  filterType: ColumnFilterSettings;
+  filterSetting: ColumnFilterSettings;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   if (!cellValue) return null;
@@ -35,7 +35,7 @@ const WithFilterFeature = ({
       </summary>
       {isOpen && (
         <div className="filter-cell__body">
-          <FilterDialogFactory id={id} filterType={filterType.type} />
+          <FilterDialogFactory id={id} filterSetting={filterSetting} />
         </div>
       )}
     </details>
@@ -48,11 +48,37 @@ export function filterTableData<T extends Record<string, any>>(
 ) {
   const [filterKey] = Object.keys(state.filter);
   if (!filterKey) return data;
-  const filterValue = String(state.filter[filterKey]).toLocaleLowerCase();
+  const filterValue = state.filter[filterKey];
+  if (Array.isArray(filterValue))
+    return filterByArrayValue(data, filterValue, filterKey);
+  return filterByValue(data, filterValue, filterKey);
+}
+
+function filterByArrayValue<T extends Record<string, any>>(
+  data: T[],
+  value: (number | string)[],
+  filterKey: string
+) {
+  const filterValue = value.map((v) => String(v).toLocaleLowerCase());
   return data.filter((row) => {
-    const dataValue = String(row[filterKey]).toLocaleLowerCase();
+    const dataValue = row[filterKey];
     if (!dataValue) return true;
-    return dataValue.includes(filterValue);
+    const safeValue = String(dataValue).toLocaleLowerCase();
+    return filterValue.includes(safeValue);
+  });
+}
+
+function filterByValue<T extends Record<string, any>>(
+  data: T[],
+  value: number | string,
+  filterKey: string
+) {
+  const filterValue = String(value).toLocaleLowerCase();
+  return data.filter((row) => {
+    const dataValue = row[filterKey];
+    if (!dataValue) return true;
+    const safeValue = String(dataValue).toLocaleLowerCase();
+    return safeValue.includes(filterValue);
   });
 }
 

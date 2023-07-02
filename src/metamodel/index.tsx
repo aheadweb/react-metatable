@@ -54,7 +54,7 @@ const getTableHeaderCell = (
       ? (val: string) => <WithSortFeature id={id} cellValue={val} />
       : identity,
     columnsSetting.filter
-      ? (val: string) => <WithFilterFeature filterType={columnsSetting.filter!} cellValue={val} id={id} />
+      ? (val: string) => <WithFilterFeature filterSetting={columnsSetting.filter!} cellValue={val} id={id} />
       : identity
   )(cellValue) as unknown as JSX.Element;
 

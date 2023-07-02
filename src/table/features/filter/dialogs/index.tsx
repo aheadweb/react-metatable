@@ -1,21 +1,24 @@
-import { useCallback } from "react";
-import { useGetTableState } from "../../../../providers";
-import { FilterTypes } from "../../../../types";
-import { TextFilterDialog } from "./TextFilter";
+import { useState } from "react";
+import { TableStateFilterValue, useGetTableState } from "../../../../providers";
+import { ColumnFilterSettings, FilterTypes } from "../../../../types";
+import { TextFilter } from "./TextFilter";
+import { EnumFilter } from "./EnumFilter";
 
 interface Props {
   id: string;
-  filterType: FilterTypes;
+  filterSetting: ColumnFilterSettings;
 }
 
 const FILTER_BODY_MAP = {
-  [FilterTypes.text]: TextFilterDialog,
-  [FilterTypes.enum]: TextFilterDialog,
-  [FilterTypes.reference]: TextFilterDialog,
+  [FilterTypes.Text]: TextFilter,
+  [FilterTypes.Enum]: EnumFilter,
+  [FilterTypes.Reference]: TextFilter,
 };
 
 export const FilterDialogFactory = (props: Props) => {
-  const { filterType, id } = props;
+  const { filterSetting, id } = props;
+  const [localeFilterValue, setLocaleFilterValue] =
+    useState<TableStateFilterValue>("");
   const { setState, state } = useGetTableState();
 
   const [filteredColumnName] = Object.keys(state.filter);
@@ -26,17 +29,33 @@ export const FilterDialogFactory = (props: Props) => {
     setState((prev) => ({ ...prev, filter: {} }));
   };
 
-  const setFilterValue = useCallback((value: string | number) => {
-    setState((prev) => ({ ...prev, filter: { [id]: value } }));
-  }, []);
+  const setFilterValue = () =>
+    setState((prev) => ({
+      ...prev,
+      filter: { [id]: localeFilterValue },
+    }));
 
-  const FilterComponent = FILTER_BODY_MAP[filterType];
+  const FilterComponent = FILTER_BODY_MAP[filterSetting.type];
+  const hasFilterValue = Array.isArray(localeFilterValue)
+    ? localeFilterValue.length
+    : localeFilterValue;
 
   return (
-    <FilterComponent
-      filterEnable={hasFilerOnColumn}
-      setFilter={setFilterValue}
-      clearFilter={clearFilter}
-    />
+    <div className="filter-dialog">
+      <div className="filter-dialog__body">
+        <FilterComponent
+          filterSetting={filterSetting}
+          setFilter={setLocaleFilterValue}
+        />
+      </div>
+      <div className="filter-dialog__footer">
+        <button disabled={!hasFilterValue} onClick={setFilterValue}>
+          filter
+        </button>
+        <button disabled={!hasFilerOnColumn} onClick={clearFilter}>
+          clearFilter
+        </button>
+      </div>
+    </div>
   );
 };

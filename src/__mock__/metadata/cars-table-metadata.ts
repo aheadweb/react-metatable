@@ -1,9 +1,13 @@
+import { carsData } from "../table-data";
 import { TableMetaData, BaseCellTypes, FilterTypes } from "../../types";
+
+const CAR_TITLES = carsData.map(({ carTitle }) => carTitle);
 
 export const carsTableMetaData: TableMetaData = {
   carTitle: {
     filter: {
-      type: FilterTypes.text,
+      type: FilterTypes.Enum,
+      options: CAR_TITLES,
     },
     sortable: true,
     cell: {

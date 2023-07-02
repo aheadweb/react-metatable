@@ -4,8 +4,6 @@ import { TableBodyCell, TableHeaderCell, TableRow } from "./components";
 import { sortTableData } from "./features/sort";
 import { filterTableData } from "./features/filter";
 import "./index.css";
-import { Utils } from "../utils";
-import { useMemo } from "react";
 
 interface TableProps<T extends Record<string, any>> {
   columns: TableScheme<T>[];
