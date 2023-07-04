@@ -49,10 +49,18 @@ export const FilterDialogFactory = (props: Props) => {
         />
       </div>
       <div className="filter-dialog__footer">
-        <button disabled={!hasFilterValue} onClick={setFilterValue}>
+        <button
+          className="filter-dialog__footer-action"
+          disabled={!hasFilterValue}
+          onClick={setFilterValue}
+        >
           filter
         </button>
-        <button disabled={!hasFilerOnColumn} onClick={clearFilter}>
+        <button
+          className="filter-dialog__footer-action"
+          disabled={!hasFilerOnColumn}
+          onClick={clearFilter}
+        >
           clearFilter
         </button>
       </div>

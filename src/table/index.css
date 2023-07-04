@@ -1,6 +1,36 @@
 .meta-table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 .meta-table__header-cell {
+  padding: 15px;
+  background: #fcfbfd;
+  border: 1px solid #e6e7e8;
   user-select: none;
+}
+
+.meta-table__body-cell {
+  padding: 10px 5px;
+  border: 1px solid #e6e7e8;
+  border-top-width: 0;
+}
+
+.meta-table__row:hover .meta-table__body-cell {
+  background-color: #fcfbfd;
+}
+
+.meta-table__row:first-child .meta-table__header-cell:first-child {
+  border-top-left-radius: 6px;
+}
+
+.meta-table__row:first-child .meta-table__header-cell:last-child {
+  border-top-right-radius: 6px;
+}
+
+.meta-table__row:last-child .meta-table__body-cell:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+.meta-table__row:last-child .meta-table__body-cell:last-child {
+  border-bottom-right-radius: 6px;
 }
