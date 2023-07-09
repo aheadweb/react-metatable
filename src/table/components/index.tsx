@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Pagination } from "./pagination";
 interface ComponentWidthChildren {
   children?: React.ReactNode;
 }
@@ -16,4 +16,4 @@ const TableHeaderCell: React.FC<ComponentWidthChildren> = ({ children }) => (
   <th className="meta-table__header-cell">{children}</th>
 );
 
-export { TableRow, TableBodyCell, TableHeaderCell };
+export { TableRow, TableBodyCell, TableHeaderCell, Pagination };
