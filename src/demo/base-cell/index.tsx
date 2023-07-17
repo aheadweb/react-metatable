@@ -39,7 +39,7 @@ export const BaseCellExample = () => {
 
   return (
     <>
-      <BaseMetaTable columns={columns} data={carsData} />
+      <BaseMetaTable pagination columns={columns} data={carsData} />
     </>
   );
 };

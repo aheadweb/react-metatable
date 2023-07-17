@@ -1,7 +1,14 @@
+.meta-table-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .meta-table {
   border-collapse: separate;
   border-spacing: 0;
 }
+
 .meta-table__header-cell {
   padding: 15px;
   background: #fcfbfd;
@@ -33,4 +40,31 @@
 
 .meta-table__row:last-child .meta-table__body-cell:last-child {
   border-bottom-right-radius: 6px;
+}
+
+.meta-table-wrapper .pagination {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  margin-top: 10px;
+}
+
+.meta-table-wrapper .pagination .pagination__item {
+  padding: 5px;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-right: 10px;
+  text-align: center;
+  border: 1px solid #e6e7e8;
+}
+
+.meta-table-wrapper .pagination .pagination__item--active {
+  background: #fcfbfd;
+  font-weight: bold;
+}
+
+.meta-table-wrapper .pagination .pagination__item:last-child {
+  margin-right: 0;
 }

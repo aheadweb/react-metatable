@@ -12,9 +12,15 @@ export const Pagination = (props: PaginationProps) => {
   return (
     <ul className="pagination">
       {paginationRange.map((paginationItem) => {
+        const isActiveItem = props.currentPage === paginationItem;
         if (typeof paginationItem === "string")
           return (
-            <li key={paginationItem} className="pagination__item">
+            <li
+              key={paginationItem}
+              className={`pagination__item ${
+                isActiveItem ? "pagination__item--active" : ""
+              }`}
+            >
               {paginationItem}
             </li>
           );
@@ -22,7 +28,9 @@ export const Pagination = (props: PaginationProps) => {
         return (
           <li
             key={paginationItem}
-            className="pagination__item"
+            className={`pagination__item ${
+              isActiveItem ? "pagination__item--active" : ""
+            }`}
             onClick={() => onChangePage(paginationItem)}
           >
             {paginationItem}
