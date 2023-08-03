@@ -39,11 +39,12 @@ const BaseMetaTable = <T extends Record<string, any>>({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(1);
 
-  const sortedData = sortTableData(state, data);
-  const filteredData = filterTableData(state, sortedData);
   const slicedData = pagination
-    ? sliceDataViaPageSize(filteredData, pageSize, page)
-    : filteredData;
+    ? sliceDataViaPageSize(data, pageSize, page)
+    : data;
+
+  const filteredData = filterTableData(state, slicedData);
+  const sortedData = sortTableData(state, filteredData);
 
   return (
     <div className="meta-table-wrapper">
@@ -58,7 +59,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
           </TableRow>
         </thead>
         <tbody className="meta-table__body">
-          {slicedData.map((tableRow, i) => {
+          {sortedData.map((tableRow, i) => {
             return (
               <TableRow key={`${tableRow?.id}${i}`}>
                 {columns.map((columns) => (
@@ -74,7 +75,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
       {pagination && (
         <Pagination
           onChangePage={(page) => setPage(page)}
-          totalCount={filteredData.length}
+          totalCount={data.length}
           pageSize={pageSize}
           siblingCount={1}
           currentPage={page}

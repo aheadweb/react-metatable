@@ -58,6 +58,7 @@
   margin-right: 10px;
   text-align: center;
   border: 1px solid #e6e7e8;
+  cursor: pointer;
 }
 
 .meta-table-wrapper .pagination .pagination__item--active {
