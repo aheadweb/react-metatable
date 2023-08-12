@@ -28,6 +28,8 @@ const sliceDataViaPageSize = <T extends Record<string, any>>(
   page: number
 ) => data.slice((page - 1) * pageSize, pageSize * page);
 
+
+// https://uxdesign.cc/data-table-for-enterprise-ux-cb48fb9fdf1e
 const BaseMetaTable = <T extends Record<string, any>>({
   columns,
   data,
@@ -37,7 +39,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
   const { state } = useGetTableState();
 
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const slicedData = pagination
     ? sliceDataViaPageSize(data, pageSize, page)
@@ -75,9 +77,9 @@ const BaseMetaTable = <T extends Record<string, any>>({
       {pagination && (
         <Pagination
           onChangePage={(page) => setPage(page)}
+          onPageSizeChange={(size) => setPageSize(size)}
           totalCount={data.length}
           pageSize={pageSize}
-          siblingCount={1}
           currentPage={page}
         />
       )}

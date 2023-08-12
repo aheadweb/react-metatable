@@ -1,42 +1,69 @@
+import { useState } from "react";
 import { usePagination } from "../../hooks";
-import { PaginationConfig, DOTS } from "../../hooks/usePagination";
+import { PaginationConfig } from "../../hooks/usePagination";
+import { Menu, MenuItem } from "../../shared/menu";
 
 export interface PaginationProps extends PaginationConfig {
   onChangePage: (pageIndex: number) => void;
+  onPageSizeChange: (size: number) => void;
 }
 
+const DEFAULT_PAGE_SIZES = [3, 5, 10, 20, 50, 100]
+const DEFAULT_SETTINGS = {
+  pageSize: 10,
+};
+
+const defaultPageSizeOptions = DEFAULT_PAGE_SIZES.map((size) => ({value: size, title: size}));
+
 export const Pagination = (props: PaginationProps) => {
-  const { onChangePage, ...rest } = props;
-  const paginationRange = usePagination(rest);
+  const {
+    onChangePage,
+    onPageSizeChange,
+    currentPage,
+    pageSize: defaultPageSize,
+    totalCount,
+  } = props;
+
+  const [pageSize, setPageSize] = useState(
+    defaultPageSize || DEFAULT_SETTINGS.pageSize
+  );
+
+  const paginationRange = usePagination({ currentPage, totalCount, pageSize });
+
+  const handlePageSizeChange = ({ value }: MenuItem) => {
+    if (typeof value !== 'number') return
+    setPageSize(value);
+    onPageSizeChange(value);
+  };
 
   return (
-    <ul className="pagination">
-      {paginationRange.map((paginationItem) => {
-        const isActiveItem = props.currentPage === paginationItem;
-        if (typeof paginationItem === "string")
+    <div className="pagination">
+      <div className="pagination__page-size-selector">
+        <Menu onChange={handlePageSizeChange} defaultValue={pageSize} options={defaultPageSizeOptions} />
+      </div>
+      <ul className="pagination__items">
+        {paginationRange.map((paginationItem) => {
+          const isActiveItem = props.currentPage === paginationItem;
+          if (typeof paginationItem === "string")
+            return (
+              <li key={paginationItem} className="pagination__item">
+                {paginationItem}
+              </li>
+            );
+
           return (
             <li
               key={paginationItem}
               className={`pagination__item ${
                 isActiveItem ? "pagination__item--active" : ""
               }`}
+              onClick={() => onChangePage(paginationItem)}
             >
               {paginationItem}
             </li>
           );
-
-        return (
-          <li
-            key={paginationItem}
-            className={`pagination__item ${
-              isActiveItem ? "pagination__item--active" : ""
-            }`}
-            onClick={() => onChangePage(paginationItem)}
-          >
-            {paginationItem}
-          </li>
-        );
-      })}
-    </ul>
+        })}
+      </ul>
+    </div>
   );
 };

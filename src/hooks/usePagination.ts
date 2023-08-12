@@ -3,7 +3,7 @@ import { Utils } from "../utils";
 export interface PaginationConfig {
   totalCount: number;
   pageSize: number;
-  siblingCount: number;
+  siblingCount?: number;
   currentPage: number;
 }
 
@@ -12,7 +12,7 @@ export const DOTS = "...";
 const calculatePagination = ({
   currentPage,
   pageSize,
-  siblingCount,
+  siblingCount = 1,
   totalCount,
 }: PaginationConfig) => {
   const totalPageCount = Math.ceil(totalCount / pageSize); // 3
