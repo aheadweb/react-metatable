@@ -31,23 +31,25 @@ export const EnumFilter = ({
 
   if (!isEnumFilter(filterSetting)) return null;
 
-  console.log(selectedInputValue);
-
   return (
     <div className="filter-enum">
-      {filterSetting.options.map((val) => (
-        <label className="filter-enum__label" key={val}>
-          <input
-            className="filter-enum__input"
-            checked={selectedInputValue.includes(String(val))}
-            onChange={setFilterValue}
-            name="enum-checkboxes-filter"
-            value={val}
-            type="checkbox"
-          />
-          {val}
-        </label>
-      ))}
+      <ul className="filter-enum__list">
+        {filterSetting.options.map((val) => (
+          <li className="filter-enum__item" key={val}>
+            <label className="filter-enum__label" key={val}>
+              <input
+                className="filter-enum__input"
+                checked={selectedInputValue.includes(String(val))}
+                onChange={setFilterValue}
+                name="enum-checkboxes-filter"
+                value={val}
+                type="checkbox"
+              />
+              {val}
+            </label>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
