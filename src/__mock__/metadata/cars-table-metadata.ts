@@ -1,7 +1,7 @@
 import { carsData } from "../table-data";
 import { TableMetaData, BaseCellTypes, FilterTypes } from "../../types";
 
-const CAR_TITLES = carsData.map(({ brand }) => brand);
+const CAR_TITLES = [...new Set(carsData.map(({ brand }) => brand))];
 
 export const carsTableMetaData: TableMetaData = {
   brand: {

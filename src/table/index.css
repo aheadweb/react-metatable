@@ -100,6 +100,13 @@
 }
 
 .meta-table-wrapper .menu__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   list-style: none;
+}
+
+.meta-table-wrapper .menu__title-text {
+  padding: 0 3px;
 }

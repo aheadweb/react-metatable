@@ -1,19 +1,24 @@
 import { useState } from "react";
-import { usePagination } from "../../hooks";
-import { PaginationConfig } from "../../hooks/usePagination";
-import { Menu, MenuItem } from "../../shared/menu";
+import { usePagination } from "../../../hooks";
+import { PaginationConfig } from "../../../hooks/usePagination";
+import { Menu, MenuItem } from "../../../shared/menu";
 
-export interface PaginationProps extends PaginationConfig {
+import { ArrowDownIcon } from "./icons";
+
+interface PaginationProps extends PaginationConfig {
   onChangePage: (pageIndex: number) => void;
   onPageSizeChange: (size: number) => void;
 }
 
-const DEFAULT_PAGE_SIZES = [3, 5, 10, 20, 50, 100]
+const DEFAULT_PAGE_SIZES = [10, 25, 50];
 const DEFAULT_SETTINGS = {
   pageSize: 10,
 };
 
-const defaultPageSizeOptions = DEFAULT_PAGE_SIZES.map((size) => ({value: size, title: size}));
+const defaultPageSizeOptions = DEFAULT_PAGE_SIZES.map((size) => ({
+  value: size,
+  title: size,
+}));
 
 export const Pagination = (props: PaginationProps) => {
   const {
@@ -31,7 +36,7 @@ export const Pagination = (props: PaginationProps) => {
   const paginationRange = usePagination({ currentPage, totalCount, pageSize });
 
   const handlePageSizeChange = ({ value }: MenuItem) => {
-    if (typeof value !== 'number') return
+    if (typeof value !== "number") return;
     setPageSize(value);
     onPageSizeChange(value);
   };
@@ -39,7 +44,12 @@ export const Pagination = (props: PaginationProps) => {
   return (
     <div className="pagination">
       <div className="pagination__page-size-selector">
-        <Menu onChange={handlePageSizeChange} defaultValue={pageSize} options={defaultPageSizeOptions} />
+        <Menu
+          titlePrefix={<ArrowDownIcon />}
+          onChange={handlePageSizeChange}
+          defaultValue={pageSize}
+          options={defaultPageSizeOptions}
+        />
       </div>
       <ul className="pagination__items">
         {paginationRange.map((paginationItem) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { Pagination } from "./pagination";
+
 interface ComponentWidthChildren {
   children?: React.ReactNode;
 }
