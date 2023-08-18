@@ -1,10 +1,17 @@
 export enum BaseCellTypes {
   text = "text",
   number = "number",
+  date = "date",
 }
 
 export type BaseCell = {
-  type: BaseCellTypes;
+  type: Exclude<keyof typeof BaseCellTypes, 'date'>;
+};
+
+export type DateCell = {
+  type: BaseCellTypes.date;
+  options?: Intl.DateTimeFormatOptions
+  locale?: string
 };
 
 export enum FilterTypes {
@@ -25,7 +32,10 @@ export type FilterEnum = {
 export type FilterReference = {
   type: FilterTypes.Reference;
   idPropName: string;
-  fetchTo: string;
+  fetch: {
+    url: string;
+    headers?: HeadersInit;
+  };
 };
 
 export type ColumnFilterSettings = FilterText | FilterEnum | FilterReference;
@@ -35,7 +45,7 @@ export type ColumnFunctionalSettings = {
   filter?: ColumnFilterSettings;
 };
 
-export type CellType = BaseCell;
+export type CellType = BaseCell | DateCell;
 
 export interface TableMetaData {
   [columnName: string]: {

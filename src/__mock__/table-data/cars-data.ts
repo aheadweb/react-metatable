@@ -4,6 +4,7 @@ export const carsData = [
     brand: "Dodge",
     model: "Stealth",
     year: 1995,
+    date: 631141200000,
     color: "Mauv",
     mileage: 228509,
     price: 80403.08,
