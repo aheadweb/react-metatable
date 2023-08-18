@@ -1,7 +1,5 @@
 .meta-table-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  overflow-x: auto;
 }
 
 .meta-table {
@@ -20,6 +18,7 @@
   padding: 10px 5px;
   border: 1px solid #e6e7e8;
   border-top-width: 0;
+  cursor: default;
 }
 
 .meta-table__row:hover .meta-table__body-cell {
@@ -52,7 +51,6 @@
 .meta-table-wrapper .pagination {
   display: flex;
   margin-top: 10px;
-
 }
 
 .meta-table-wrapper .pagination .pagination__item,

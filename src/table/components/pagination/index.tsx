@@ -52,11 +52,11 @@ export const Pagination = (props: PaginationProps) => {
         />
       </div>
       <ul className="pagination__items">
-        {paginationRange.map((paginationItem) => {
+        {paginationRange.map((paginationItem, index) => {
           const isActiveItem = props.currentPage === paginationItem;
           if (typeof paginationItem === "string")
             return (
-              <li key={paginationItem} className="pagination__item">
+              <li key={paginationItem + index} className="pagination__item">
                 {paginationItem}
               </li>
             );

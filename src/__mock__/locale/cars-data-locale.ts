@@ -1,7 +1,7 @@
 export const carsDataLocale = {
   ru: {
-    carTitle: "Название",
-    modelName: "Модель",
+    brand: "Бренд",
+    model: "Модель",
     price: "Цена",
   },
 };
