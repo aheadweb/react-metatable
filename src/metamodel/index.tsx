@@ -54,7 +54,13 @@ const getTableHeaderCell = (
       ? (val: string) => <WithSortFeature id={id} cellValue={val} />
       : identity,
     columnsSetting.filter
-      ? (val: string) => <WithFilterFeature filterSetting={columnsSetting.filter!} cellValue={val} id={id} />
+      ? (val: string) => (
+          <WithFilterFeature
+            filterSetting={columnsSetting.filter!}
+            cellValue={val}
+            id={id}
+          />
+        )
       : identity
   )(cellValue) as unknown as JSX.Element;
 
@@ -65,6 +71,10 @@ const getColumnCell = <T extends Record<string, any>>(
   const Component = FIELDS_MAP[cellSettings.type];
   if (!Component) return null;
   return (tableData: T) => (
-    <Component value={tableData[columnName] || undefined} />
+    <Component
+      cellSettings={cellSettings}
+      tableData={tableData}
+      value={tableData[columnName] || undefined}
+    />
   );
 };

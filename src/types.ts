@@ -2,16 +2,28 @@ export enum BaseCellTypes {
   text = "text",
   number = "number",
   date = "date",
+  reference = "reference",
 }
 
 export type BaseCell = {
-  type: Exclude<keyof typeof BaseCellTypes, 'date'>;
+  type: BaseCellTypes;
+};
+
+export type ReferenceCell = {
+  type: BaseCellTypes.reference;
+  fetch: {
+    url: string;
+    extraHeaders?: HeadersInit;
+    paramsType: "path" | "query";
+    fieldNameWithDataForFetching: string;
+    fieldNameReceivedObject: string;
+  };
 };
 
 export type DateCell = {
   type: BaseCellTypes.date;
-  options?: Intl.DateTimeFormatOptions
-  locale?: string
+  options?: Intl.DateTimeFormatOptions;
+  locale?: string;
 };
 
 export enum FilterTypes {
@@ -31,10 +43,11 @@ export type FilterEnum = {
 
 export type FilterReference = {
   type: FilterTypes.Reference;
-  idPropName: string;
   fetch: {
     url: string;
-    headers?: HeadersInit;
+    extraHeaders?: HeadersInit;
+    fieldNameReceivedObject: string;
+    fieldNameToFilterValue: string
   };
 };
 
@@ -45,7 +58,7 @@ export type ColumnFunctionalSettings = {
   filter?: ColumnFilterSettings;
 };
 
-export type CellType = BaseCell | DateCell;
+export type CellType = BaseCell | DateCell | ReferenceCell;
 
 export interface TableMetaData {
   [columnName: string]: {

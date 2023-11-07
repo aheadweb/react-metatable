@@ -3,6 +3,7 @@ import { TableStateFilterValue, useGetTableState } from "../../../../providers";
 import { ColumnFilterSettings, FilterTypes } from "../../../../types";
 import { TextFilter } from "./TextFilter";
 import { EnumFilter } from "./EnumFilter";
+import { ReferenceFilter } from "./ReferenceFilter";
 
 interface Props {
   id: string;
@@ -12,7 +13,7 @@ interface Props {
 const FILTER_BODY_MAP = {
   [FilterTypes.Text]: TextFilter,
   [FilterTypes.Enum]: EnumFilter,
-  [FilterTypes.Reference]: TextFilter,
+  [FilterTypes.Reference]: ReferenceFilter,
 };
 
 export const FilterDialogFactory = (props: Props) => {

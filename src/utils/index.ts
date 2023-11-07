@@ -12,4 +12,11 @@ export class Utils {
     const length = end - start + 1;
     return Array.from({ length }, (_, index) => index + start);
   }
+
+  static async request(url: URL, options?: RequestInit) {
+    const response = await fetch(url, options);
+
+    if (response.status !== 200) throw new Error(response.statusText);
+    return await response.json();
+  }
 }
