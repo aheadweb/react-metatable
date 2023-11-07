@@ -9,8 +9,7 @@ import {
   TableRow,
 } from "./components";
 
-import { sortTableData } from "./features/sort";
-import { filterTableData } from "./features/filter";
+import { filterTableData, sortTableData } from "../table-features";
 
 import "./index.css";
 import { useState } from "react";
@@ -27,7 +26,6 @@ const sliceDataViaPageSize = <T extends Record<string, any>>(
   pageSize: number,
   page: number
 ) => data.slice((page - 1) * pageSize, pageSize * page);
-
 
 const BaseMetaTable = <T extends Record<string, any>>({
   columns,

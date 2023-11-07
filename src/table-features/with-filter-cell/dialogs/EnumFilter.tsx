@@ -3,7 +3,7 @@ import {
   ColumnFilterSettings,
   FilterTypes,
   FilterEnum,
-} from "../../../../types";
+} from "../../../types";
 
 const isEnumFilter = (
   filterSettings: ColumnFilterSettings

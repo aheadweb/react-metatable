@@ -2,14 +2,15 @@ import { useMemo } from "react";
 
 import {
   CellType,
+  ColumnFilterSettings,
   ColumnFunctionalSettings,
   TableMetaData,
   TableScheme,
 } from "../types";
 import { Utils } from "../utils";
-import { FIELDS_MAP } from "../cells";
+import { FIELDS_MAP } from "../table-cells";
 
-import { WithFilterFeature, WithSortFeature } from "../table/features";
+import { WithFilterCell, WithSortCell } from "../table-features";
 
 interface TableMetaModelProps {
   metaData: TableMetaData;
@@ -44,25 +45,42 @@ export const useGetTableColumns = <T extends {}>(
   );
 };
 
+const featuresNameToComponent: Record<
+  keyof ColumnFunctionalSettings,
+  (props: {
+    id: string;
+    cellValue: string;
+    filterSetting?: ColumnFilterSettings;
+  }) => any
+> = {
+  filter: WithFilterCell,
+  sortable: WithSortCell,
+};
+
 const getTableHeaderCell = (
   id: string,
   cellValue: string,
   columnsSetting: ColumnFunctionalSettings
-) =>
-  Utils.pipeline(
-    columnsSetting.sortable
-      ? (val: string) => <WithSortFeature id={id} cellValue={val} />
-      : identity,
-    columnsSetting.filter
-      ? (val: string) => (
-          <WithFilterFeature
-            filterSetting={columnsSetting.filter!}
-            cellValue={val}
-            id={id}
-          />
-        )
-      : identity
+) => {
+  return Utils.pipeline(
+    ...Object.entries(columnsSetting).map((values) => {
+      const [fieldName, value] = values;
+      const fieldAsString = fieldName as keyof ColumnFunctionalSettings;
+      const columnSettings = columnsSetting[fieldAsString];
+      if (!value) return identity;
+      const FeatureComponent = featuresNameToComponent[fieldAsString];
+      return (val: string) => (
+        <FeatureComponent
+          filterSetting={
+            typeof columnSettings === "boolean" ? undefined : columnSettings
+          }
+          cellValue={val}
+          id={id}
+        />
+      );
+    })
   )(cellValue) as unknown as JSX.Element;
+};
 
 const getColumnCell = <T extends Record<string, any>>(
   columnName: string,

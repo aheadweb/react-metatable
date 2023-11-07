@@ -4,9 +4,9 @@ import {
   FilterTypes,
   FilterReference,
   FilterEnum,
-} from "../../../../types";
+} from "../../../types";
 import { EnumFilter } from "./EnumFilter";
-import { Utils } from "../../../../utils";
+import { Utils } from "../../../utils";
 
 const isReferenceFilter = (
   filterSettings: ColumnFilterSettings
