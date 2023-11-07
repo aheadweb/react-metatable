@@ -29,7 +29,6 @@ const sliceDataViaPageSize = <T extends Record<string, any>>(
 ) => data.slice((page - 1) * pageSize, pageSize * page);
 
 
-// https://uxdesign.cc/data-table-for-enterprise-ux-cb48fb9fdf1e
 const BaseMetaTable = <T extends Record<string, any>>({
   columns,
   data,
