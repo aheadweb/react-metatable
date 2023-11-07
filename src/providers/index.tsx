@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { SORT_STATUSES } from "../table/features";
+import { SORT_STATUSES } from "../table-features";
 
 export type TableStateFilterValue = (string | number) | (string | number)[];
 
