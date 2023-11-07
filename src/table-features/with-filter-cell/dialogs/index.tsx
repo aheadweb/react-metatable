@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { TableStateFilterValue, useGetTableState } from "../../../../providers";
-import { ColumnFilterSettings, FilterTypes } from "../../../../types";
+import { TableStateFilterValue, useGetTableState } from "../../../providers";
+import { ColumnFilterSettings, FilterTypes } from "../../../types";
 import { TextFilter } from "./TextFilter";
 import { EnumFilter } from "./EnumFilter";
 import { ReferenceFilter } from "./ReferenceFilter";

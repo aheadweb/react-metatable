@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { TableState, useGetTableState } from "../../../providers";
+import { TableState, useGetTableState } from "../../providers";
 import "./index.css";
 import { SortAskIcon, SortDescIcon, SortIcon } from "./icons";
 
@@ -65,7 +65,7 @@ const WithSortFeature = ({
   }, []);
 
   const status = state.sortable[id];
-  
+
   return (
     <span className="sort-cell">
       <span className="sort-cell__value">{cellValue}</span>
@@ -77,4 +77,4 @@ const WithSortFeature = ({
 };
 
 const Memo = React.memo(WithSortFeature);
-export { Memo as WithSortFeature };
+export { Memo as WithSortCell };

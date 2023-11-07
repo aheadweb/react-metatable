@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { TableState } from "../../../providers";
-import { ColumnFilterSettings } from "../../../types";
+import { TableState } from "../../providers";
+import { ColumnFilterSettings } from "../../types";
 import { FilterDialogFactory } from "./dialogs";
 
 import "./index.css";
@@ -16,7 +16,7 @@ const WithFilterFeature = ({
 }: {
   id: string;
   cellValue: string;
-  filterSetting: ColumnFilterSettings;
+  filterSetting?: ColumnFilterSettings;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   if (!cellValue) return null;
@@ -24,6 +24,8 @@ const WithFilterFeature = ({
   const toggleFilterBody = () => {
     setIsOpen((prev) => !prev);
   };
+
+  if (!filterSetting) return null
 
   return (
     <details className="filter-cell" open={isOpen}>
@@ -83,4 +85,4 @@ function filterByValue<T extends Record<string, any>>(
 }
 
 const WithFilterFeatureMemo = React.memo(WithFilterFeature);
-export { WithFilterFeatureMemo as WithFilterFeature };
+export { WithFilterFeatureMemo as WithFilterCell };

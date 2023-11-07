@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ColumnFilterSettings } from "../../../../types";
+import { ColumnFilterSettings } from "../../../types";
 
 export const TextFilter = ({
   setFilter,

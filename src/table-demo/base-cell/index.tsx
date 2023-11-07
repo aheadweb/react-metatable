@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { carsTableMetaData, carsDataLocale } from "../../__mock__";
-import { useGetTableColumns } from "../../metamodel";
+import { carModel } from "../../__mock__";
+import { useGetTableColumns } from "../../table-metamodels";
 import { BaseMetaTable } from "../../table";
 
 interface CarsData {
@@ -13,8 +13,8 @@ interface CarsData {
 export const BaseCellExample = () => {
   const [data, setData] = useState<CarsData[]>([]);
   const { columns } = useGetTableColumns<CarsData>({
-    metaData: carsTableMetaData,
-    locale: carsDataLocale.ru,
+    metaData: carModel.carsTableMetaData,
+    locale: carModel.carsDataLocale.ru,
   });
 
   useEffect(() => {
