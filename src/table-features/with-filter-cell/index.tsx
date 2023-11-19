@@ -1,38 +1,41 @@
 import React, { useState } from "react";
 
-import { TableState } from "../../providers";
+import { TableState, useGetTableState } from "../../providers";
 import { ColumnFilterSettings } from "../../types";
 import { FilterDialogFactory } from "./dialogs";
 
 import "./index.css";
 import { CloseFilterIcon, OpenFilterIcon } from "./icons";
 
+const getDefaultIcons = (isOpen: boolean) =>
+  !isOpen ? <OpenFilterIcon /> : <CloseFilterIcon />;
+
 const eventPreventDefault = (e: React.MouseEvent) => e.preventDefault();
 
-const WithFilterFeature = ({
-  id,
-  filterSetting,
-  cellValue,
-}: {
+const WithFilterFeature = (props: {
   id: string;
   cellValue: string;
   filterSetting?: ColumnFilterSettings;
+  icon?: (filtered: boolean, isOpenDialog: boolean) => JSX.Element;
 }) => {
+  const { cellValue, id, filterSetting, icon } = props;
+  const { state } = useGetTableState();
   const [isOpen, setIsOpen] = useState(false);
   if (!cellValue) return null;
 
-  const toggleFilterBody = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const toggleFilterBody = () => setIsOpen((prev) => !prev);
 
-  if (!filterSetting) return null
+  if (!filterSetting) return null;
+
+  const hasSomeFilter = Object.values(state.filter).some(Boolean);
+  const filterIcon = icon ? icon(hasSomeFilter, isOpen) : getDefaultIcons(isOpen);
 
   return (
     <details className="filter-cell" open={isOpen}>
       <summary onClick={eventPreventDefault} className="filter-cell__content">
         <span className="filter-cell__value">{cellValue}</span>
         <span onClick={toggleFilterBody} className="filter-cell__button">
-          {!isOpen ? <OpenFilterIcon /> : <CloseFilterIcon />}
+          {filterIcon}
         </span>
       </summary>
       {isOpen && (
@@ -85,4 +88,6 @@ function filterByValue<T extends Record<string, any>>(
 }
 
 const WithFilterFeatureMemo = React.memo(WithFilterFeature);
+WithFilterFeatureMemo.displayName = "WithFilterCell";
+
 export { WithFilterFeatureMemo as WithFilterCell };

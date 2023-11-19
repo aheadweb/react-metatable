@@ -44,13 +44,12 @@ export const sortTableData = <T extends Record<string, any>>(
   return sortStatus === SORT_STATUSES.ASC ? newData : newData.reverse();
 };
 
-const WithSortFeature = ({
-  cellValue,
-  id,
-}: {
+const WithSortFeature = (props: {
   id: string;
   cellValue: string;
+  icon?: (sortStatus: keyof typeof SORT_STATUSES) => JSX.Element;
 }) => {
+  const { cellValue, id, icon } = props;
   const { setState, state } = useGetTableState();
 
   if (!cellValue) return null;
@@ -65,16 +64,18 @@ const WithSortFeature = ({
   }, []);
 
   const status = state.sortable[id];
+  const sortIcon = icon ? icon(status || ARROW_MAP.DEFAULT) : (ARROW_MAP[status] || ARROW_MAP.DEFAULT)
 
   return (
     <span className="sort-cell">
       <span className="sort-cell__value">{cellValue}</span>
       <span className="sort-cell__button" onClick={toggleSortStatus}>
-        {ARROW_MAP[status] || ARROW_MAP.DEFAULT}
+        {sortIcon}
       </span>
     </span>
   );
 };
 
 const Memo = React.memo(WithSortFeature);
+Memo.displayName = "WithSortCell";
 export { Memo as WithSortCell };

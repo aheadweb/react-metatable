@@ -1,4 +1,5 @@
 import { useGetTableColumns } from "./table-metamodels";
-import { BaseMetaTable } from "./table";
+import { MetaTable } from "./table";
+import { TableStateProvider } from "./providers";
 
-export { BaseMetaTable, useGetTableColumns };
+export { MetaTable, useGetTableColumns, TableStateProvider };

@@ -7,7 +7,7 @@ const rootApp = document.getElementById("root") as HTMLElement;
 ReactDOM.createRoot(rootApp).render(
   <React.StrictMode>
     <section>
-      <h1>Base cell example</h1>
+      <h1>All features</h1>
       <BaseCellExample />
     </section>
     <hr />

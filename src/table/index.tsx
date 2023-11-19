@@ -1,4 +1,6 @@
-import { TableScheme } from "../types";
+import { useState } from "react";
+
+import { TableScheme, HeaderModelSettings } from "../types";
 
 import { TableStateProvider, useGetTableState } from "../providers";
 
@@ -12,9 +14,9 @@ import {
 import { filterTableData, sortTableData } from "../table-features";
 
 import "./index.css";
-import { useState } from "react";
 
-interface TableProps<T extends Record<string, any>> {
+interface TableProps<T extends Record<string, any>>
+  extends HeaderModelSettings {
   pagination?: boolean;
   columns: TableScheme<T>[];
   data: T[];
@@ -32,7 +34,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
   data,
   ...rest
 }: TableProps<T>) => {
-  const { className, pagination } = rest;
+  const { className, pagination, ...headerModelSettings } = rest;
   const { state } = useGetTableState();
 
   const [page, setPage] = useState(1);
@@ -53,7 +55,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
           <TableRow>
             {columns.map((columns, count) => (
               <TableHeaderCell key={count}>
-                {columns.headerModel}
+                {columns.headerModel && columns.headerModel(headerModelSettings)}
               </TableHeaderCell>
             ))}
           </TableRow>
@@ -85,7 +87,7 @@ const BaseMetaTable = <T extends Record<string, any>>({
   );
 };
 
-const BaseMetaTableWithStateProvider = <T extends Record<string, any>>(
+const MetaTableWithStateProvider = <T extends Record<string, any>>(
   props: TableProps<T>
 ) => (
   <TableStateProvider>
@@ -93,4 +95,4 @@ const BaseMetaTableWithStateProvider = <T extends Record<string, any>>(
   </TableStateProvider>
 );
 
-export { BaseMetaTableWithStateProvider as BaseMetaTable };
+export { MetaTableWithStateProvider as MetaTable };

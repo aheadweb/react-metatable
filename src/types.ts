@@ -1,3 +1,5 @@
+import { SORT_STATUSES } from "./table-features";
+
 export enum BaseCellTypes {
   text = "text",
   number = "number",
@@ -47,7 +49,7 @@ export type FilterReference = {
     url: string;
     extraHeaders?: HeadersInit;
     fieldNameReceivedObject: string;
-    fieldNameToFilterValue: string
+    fieldNameToFilterValue: string;
   };
 };
 
@@ -66,9 +68,22 @@ export interface TableMetaData {
   } & ColumnFunctionalSettings;
 }
 
+export interface HeaderModelSettings {
+  sortIcon?: (sortStatus: keyof typeof SORT_STATUSES) => JSX.Element;
+  filterIcon?: (filtered: boolean, isOpenDialog: boolean) => JSX.Element;
+}
+
+export interface TableOpenApi {
+  setSort: (columnName: string, sortStatus: string) => void;
+  setFilter: (
+    columnName: string,
+    filterValue: string | number | (string | number)[]
+  ) => void;
+}
+
 export interface TableScheme<T extends Record<string, any>> {
   id: string;
-  headerModel: JSX.Element | null | string;
+  headerModel: (settings: HeaderModelSettings) => JSX.Element | null | string;
   bodyModel: ((tableData: T) => JSX.Element) | null;
 }
 

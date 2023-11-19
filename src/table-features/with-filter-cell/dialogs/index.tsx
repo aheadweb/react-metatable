@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TableStateFilterValue, useGetTableState } from "../../../providers";
 import { ColumnFilterSettings, FilterTypes } from "../../../types";
 import { TextFilter } from "./TextFilter";
@@ -36,7 +36,11 @@ export const FilterDialogFactory = (props: Props) => {
       filter: { [id]: localeFilterValue },
     }));
 
-  const FilterComponent = FILTER_BODY_MAP[filterSetting.type];
+  const FilterComponent = useMemo(
+    () => FILTER_BODY_MAP[filterSetting.type],
+    [filterSetting.type]
+  );
+
   const hasFilterValue = Array.isArray(localeFilterValue)
     ? localeFilterValue.length
     : localeFilterValue;

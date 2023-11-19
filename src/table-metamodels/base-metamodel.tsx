@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 import {
   CellType,
@@ -6,6 +6,7 @@ import {
   ColumnFunctionalSettings,
   TableMetaData,
   TableScheme,
+  HeaderModelSettings,
 } from "../types";
 import { Utils } from "../utils";
 import { FIELDS_MAP } from "../table-cells";
@@ -18,6 +19,38 @@ interface TableMetaModelProps {
 }
 
 const identity = (a: any) => <>{a}</>;
+
+const getComponentName = (component: (props: any) => any) =>
+  "displayName" in component ? component.displayName : "";
+
+const isSortableOrFilterComponent = (componentName: string) =>
+  ["WithFilterCell", "WithSortCell"].includes(componentName);
+
+const isSortComponent = (componentName: string) =>
+  componentName === "WithSortCell";
+
+const setIconIfNeed = (
+  componentName: string,
+  settings: HeaderModelSettings,
+  headerProps: Record<string, any>
+) => {
+  if (!isSortableOrFilterComponent(componentName)) return;
+  headerProps.icon = isSortComponent(componentName)
+    ? settings.sortIcon
+    : settings.filterIcon;
+};
+
+const featuresNameToComponent: Record<
+  keyof ColumnFunctionalSettings,
+  (props: {
+    id: string;
+    cellValue: string;
+    filterSetting?: ColumnFilterSettings;
+  }) => any
+> = {
+  filter: WithFilterCell,
+  sortable: WithSortCell,
+};
 
 export const useGetTableColumns = <T extends {}>(
   props: TableMetaModelProps
@@ -45,41 +78,41 @@ export const useGetTableColumns = <T extends {}>(
   );
 };
 
-const featuresNameToComponent: Record<
-  keyof ColumnFunctionalSettings,
-  (props: {
-    id: string;
-    cellValue: string;
-    filterSetting?: ColumnFilterSettings;
-  }) => any
-> = {
-  filter: WithFilterCell,
-  sortable: WithSortCell,
-};
-
 const getTableHeaderCell = (
   id: string,
   cellValue: string,
   columnsSetting: ColumnFunctionalSettings
 ) => {
-  return Utils.pipeline(
-    ...Object.entries(columnsSetting).map((values) => {
-      const [fieldName, value] = values;
-      const fieldAsString = fieldName as keyof ColumnFunctionalSettings;
-      const columnSettings = columnsSetting[fieldAsString];
-      if (!value) return identity;
-      const FeatureComponent = featuresNameToComponent[fieldAsString];
-      return (val: string) => (
-        <FeatureComponent
-          filterSetting={
-            typeof columnSettings === "boolean" ? undefined : columnSettings
-          }
-          cellValue={val}
-          id={id}
-        />
-      );
-    })
-  )(cellValue) as unknown as JSX.Element;
+  return (settings: HeaderModelSettings) =>
+    Utils.pipeline(
+      ...Object.entries(columnsSetting).map((values) => {
+        const [fieldName, value] = values;
+        const fieldAsString = fieldName as keyof ColumnFunctionalSettings;
+        const columnSettings = columnsSetting[fieldAsString];
+        if (!value) return identity;
+
+        const FeatureComponent = featuresNameToComponent[fieldAsString];
+        const headerModelData: Record<string, any> = {};
+
+        Utils.pipeline(setIconIfNeed)(
+          getComponentName(FeatureComponent),
+          settings,
+          headerModelData
+        );
+
+        return (val: string) =>
+          React.cloneElement(
+            <FeatureComponent
+              filterSetting={
+                typeof columnSettings === "boolean" ? undefined : columnSettings
+              }
+              cellValue={val}
+              id={id}
+            />,
+            { ...headerModelData }
+          );
+      })
+    )(cellValue) as unknown as JSX.Element;
 };
 
 const getColumnCell = <T extends Record<string, any>>(

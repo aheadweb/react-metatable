@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { carModel } from "../../__mock__";
 import { useGetTableColumns } from "../../table-metamodels";
-import { BaseMetaTable } from "../../table";
+import { MetaTable } from "../../table";
 
 interface CarsData {
   fuel_type: string;
@@ -12,6 +12,7 @@ interface CarsData {
 
 export const BaseCellExample = () => {
   const [data, setData] = useState<CarsData[]>([]);
+
   const { columns } = useGetTableColumns<CarsData>({
     metaData: carModel.carsTableMetaData,
     locale: carModel.carsDataLocale.ru,
@@ -25,7 +26,11 @@ export const BaseCellExample = () => {
 
   return (
     <>
-      <BaseMetaTable<CarsData> pagination columns={columns} data={data} />
+      <MetaTable<CarsData>
+        pagination
+        columns={columns} 
+        data={data}
+      />
     </>
   );
 };
