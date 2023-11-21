@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 
-import { TableScheme, HeaderModelSettings } from "../types";
+import { TableScheme, HeaderModelSettings, TableOpenApi } from "../types";
 
 import { TableStateProvider, useGetTableState } from "../providers";
 
@@ -29,24 +29,29 @@ const sliceDataViaPageSize = <T extends Record<string, any>>(
   page: number
 ) => data.slice((page - 1) * pageSize, pageSize * page);
 
-const BaseMetaTable = <T extends Record<string, any>>({
-  columns,
-  data,
-  ...rest
-}: TableProps<T>) => {
+const MetaTable = <T extends Record<string, any>>(
+  props: TableProps<T>,
+  ref: React.ForwardedRef<TableOpenApi>
+) => {
+  const { columns, data, ...rest } = props;
   const { className, pagination, ...headerModelSettings } = rest;
-  const { state } = useGetTableState();
-
+  const { state, setState } = useGetTableState();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
   const filteredData = filterTableData(state, data);
-
   const slicedData = pagination
     ? sliceDataViaPageSize(filteredData, pageSize, page)
     : filteredData;
-
   const sortedData = sortTableData(state, slicedData);
+
+  useImperativeHandle(ref, () => ({
+    setFilter: (columnName, value) =>
+      setState((prev) => ({ ...prev, filter: { [columnName]: value } })),
+    setSort: (columnName, sortStatus) =>
+      setState((prev) => ({ ...prev, sortable: { [columnName]: sortStatus } })),
+    setPage: (page) => setPage(page),
+  }));
 
   return (
     <div className="meta-table-wrapper">
@@ -55,7 +60,8 @@ const BaseMetaTable = <T extends Record<string, any>>({
           <TableRow>
             {columns.map((columns, count) => (
               <TableHeaderCell key={count}>
-                {columns.headerModel && columns.headerModel(headerModelSettings)}
+                {columns.headerModel &&
+                  columns.headerModel(headerModelSettings)}
               </TableHeaderCell>
             ))}
           </TableRow>
@@ -87,12 +93,21 @@ const BaseMetaTable = <T extends Record<string, any>>({
   );
 };
 
+const MetaTableWidthApi = React.forwardRef(MetaTable) as <
+  T extends Record<string, any>
+>(
+  props: TableProps<T> & { ref?: React.ForwardedRef<TableOpenApi> }
+) => JSX.Element;
+
 const MetaTableWithStateProvider = <T extends Record<string, any>>(
-  props: TableProps<T>
-) => (
-  <TableStateProvider>
-    <BaseMetaTable {...props} />
-  </TableStateProvider>
-);
+  props: TableProps<T> & { tableApi?: React.ForwardedRef<TableOpenApi> }
+) => {
+  const { tableApi, ...rest } = props;
+  return (
+    <TableStateProvider>
+      <MetaTableWidthApi {...rest} ref={tableApi} />
+    </TableStateProvider>
+  );
+};
 
 export { MetaTableWithStateProvider as MetaTable };

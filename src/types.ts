@@ -74,11 +74,12 @@ export interface HeaderModelSettings {
 }
 
 export interface TableOpenApi {
-  setSort: (columnName: string, sortStatus: string) => void;
+  setSort: (columnName: string, sortStatus: keyof typeof SORT_STATUSES) => void;
   setFilter: (
     columnName: string,
     filterValue: string | number | (string | number)[]
   ) => void;
+  setPage: (pageNumber: number) => void 
 }
 
 export interface TableScheme<T extends Record<string, any>> {
