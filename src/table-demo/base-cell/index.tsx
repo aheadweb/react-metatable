@@ -17,6 +17,7 @@ export const BaseCellExample = () => {
     metaData: carModel.carsTableMetaData,
     locale: carModel.carsDataLocale.ru,
   });
+  const tableApi = useRef<TableOpenApi>(null!);
 
   useEffect(() => {
     fetch("http://localhost:3000/cars")
@@ -27,6 +28,12 @@ export const BaseCellExample = () => {
   return (
     <>
       <MetaTable<CarsData>
+        tableApi={tableApi}
+        expandable={{
+          isExpandRow: (tableData) => tableData.brand !== "Land Rover",
+          render: (rowData) =>
+            `This car build by ${rowData.brand}. Model name is ${rowData.model}`,
+        }}
         pagination
         columns={columns}
         data={data}

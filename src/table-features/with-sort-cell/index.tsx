@@ -30,6 +30,7 @@ export const sortTableData = <T extends Record<string, any>>(
   if (!sortConfig) return data;
 
   const [propName, sortStatus] = sortConfig;
+  if (!propName || !Object.keys(SORT_STATUSES).includes(sortStatus)) return data
   if (sortStatus === SORT_STATUSES.DEFAULT) return data;
 
   const cloneData = [...data];

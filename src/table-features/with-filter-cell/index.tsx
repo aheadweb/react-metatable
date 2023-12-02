@@ -28,7 +28,9 @@ const WithFilterFeature = (props: {
   if (!filterSetting) return null;
 
   const hasSomeFilter = Object.values(state.filter).some(Boolean);
-  const filterIcon = icon ? icon(hasSomeFilter, isOpen) : getDefaultIcons(isOpen);
+  const filterIcon = icon
+    ? icon(hasSomeFilter, isOpen)
+    : getDefaultIcons(isOpen);
 
   return (
     <details className="filter-cell" open={isOpen}>
@@ -54,6 +56,8 @@ export function filterTableData<T extends Record<string, any>>(
   const [filterKey] = Object.keys(state.filter);
   if (!filterKey) return data;
   const filterValue = state.filter[filterKey];
+  if (!filterValue) return data;
+
   if (Array.isArray(filterValue))
     return filterByArrayValue(data, filterValue, filterKey);
   return filterByValue(data, filterValue, filterKey);

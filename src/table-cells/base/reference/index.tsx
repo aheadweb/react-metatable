@@ -14,6 +14,7 @@ export const ReferenceCell = (props: ReferenceCellProps) => {
     cellSettings: { fetch },
     tableData,
   } = props;
+
   const [entity, setEntity] = useState<Entity>(undefined);
 
   useEffect(() => {

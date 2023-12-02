@@ -3,7 +3,7 @@ import { usePagination } from "../../../hooks";
 import { PaginationConfig } from "../../../hooks/usePagination";
 import { Menu, MenuItem } from "../../../shared/menu";
 
-import { ArrowDownIcon } from "./icons";
+import { ArrowDownIcon } from "../icons";
 
 interface PaginationProps extends PaginationConfig {
   onChangePage: (pageIndex: number) => void;

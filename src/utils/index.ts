@@ -19,4 +19,6 @@ export class Utils {
     if (response.status !== 200) throw new Error(response.statusText);
     return await response.json();
   }
+
+  static isFunction = (fn: unknown): fn is Function => typeof fn === "function";
 }

@@ -21,6 +21,16 @@
   cursor: default;
 }
 
+.meta-table__body-cell-expand-toggle {
+  cursor: pointer;
+}
+
+.meta-table__body-cell-expand-toggle .meta-table__cell-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .meta-table__row:hover .meta-table__body-cell {
   background-color: #fcfbfd;
 }
