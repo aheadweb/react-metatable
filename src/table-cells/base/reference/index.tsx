@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReferenceCell as ReferenceCellType } from "../../../types";
 import { Utils } from "../../../utils";
+import { useCellCache } from "../../../providers";
 
 type Entity = Record<string, unknown> | undefined;
 
@@ -16,7 +17,7 @@ export const ReferenceCell = (props: ReferenceCellProps) => {
   } = props;
 
   const [entity, setEntity] = useState<Entity>(undefined);
-
+  const cache = useCellCache();
   useEffect(() => {
     const isPathParams = fetch.paramsType === "path";
     const paramValue = String(tableData[fetch.fieldNameWithDataForFetching]);
@@ -27,8 +28,18 @@ export const ReferenceCell = (props: ReferenceCellProps) => {
       url.searchParams.append(fetch.fieldNameWithDataForFetching, paramValue);
     }
 
+    const cachedValue = cache.get<Entity>(url.href);
+
+    if (cachedValue) {
+      setEntity(cachedValue);
+      return;
+    }
+
     Utils.request(url, { headers: fetch.extraHeaders })
-      .then(setEntity)
+      .then((entity) => {
+        cache.set(url.href, entity);
+        setEntity(entity);
+      })
       .catch(console.error);
   }, []);
 

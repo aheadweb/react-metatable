@@ -20,5 +20,20 @@ export class Utils {
     return await response.json();
   }
 
-  static isFunction = (fn: unknown): fn is Function => typeof fn === "function";
+  static isFunction(fn: unknown): fn is Function {
+    return typeof fn === "function";
+  }
+
+  static createCacheMap() {
+    const MAX_CACHE_SIZE = 10;
+    const CACHE = new Map<string, any>();
+
+    return {
+      set<T>(key: string, value: T) {
+        CACHE.set(key, value);
+      },
+      get: <T>(key: string): T | undefined => CACHE.get(key),
+      clear: () => CACHE.clear(),
+    };
+  }
 }

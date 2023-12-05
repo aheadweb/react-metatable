@@ -34,6 +34,8 @@ export enum FilterTypes {
   Reference = "reference",
 }
 
+export type TableStateFilterValue = (string | number) | (string | number)[];
+
 export type FilterText = {
   type: FilterTypes.Text;
 };
