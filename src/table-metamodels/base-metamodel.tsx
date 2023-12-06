@@ -21,7 +21,7 @@ interface TableMetaModelProps {
 const identity = (a: any) => <>{a}</>;
 
 const getComponentName = (component: (props: any) => any) =>
-  "displayName" in component ? component.displayName : "";
+  "displayName" in component ? (component.displayName as string) : "";
 
 const isSortableOrFilterComponent = (componentName: string) =>
   ["WithFilterCell", "WithSortCell"].includes(componentName);
@@ -35,9 +35,23 @@ const setIconIfNeed = (
   headerProps: Record<string, any>
 ) => {
   if (!isSortableOrFilterComponent(componentName)) return;
+
   headerProps.icon = isSortComponent(componentName)
-    ? settings.sortIcon
-    : settings.filterIcon;
+    ? settings.sort?.sortIcon
+    : settings.filter?.filterIcon;
+};
+
+const setFilterDDIfNeed = (
+  componentName: string,
+  settings: HeaderModelSettings,
+  headerProps: Record<string, any>
+) => {
+  if (
+    !isSortableOrFilterComponent(componentName) &&
+    isSortComponent(componentName)
+  )
+    return;
+  headerProps.filterDD = settings.filter?.filterDD;
 };
 
 const featuresNameToComponent: Record<
@@ -92,12 +106,11 @@ const getTableHeaderCell = (
         if (!value) return identity;
 
         const FeatureComponent = featuresNameToComponent[fieldAsString];
+        const componentName = getComponentName(FeatureComponent);
         const headerModelData: Record<string, any> = {};
 
-        Utils.pipeline(setIconIfNeed)(
-          getComponentName(FeatureComponent),
-          settings,
-          headerModelData
+        [setIconIfNeed, setFilterDDIfNeed].forEach((fn) =>
+          fn(componentName, settings, headerModelData)
         );
 
         return (val: string) =>
