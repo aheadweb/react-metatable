@@ -71,17 +71,25 @@ export interface TableMetaData {
 }
 
 export interface HeaderModelSettings {
-  sortIcon?: (sortStatus: keyof typeof SORT_STATUSES) => JSX.Element;
-  filterIcon?: (filtered: boolean, isOpenDialog: boolean) => JSX.Element;
+  filter?: {
+    filterDD?: ({
+      confirm,
+      close,
+    }: {
+      confirm: (value: TableStateFilterValue) => void;
+      close: () => void;
+    }) => JSX.Element;
+    filterIcon?: (filtered: boolean, isOpenDialog: boolean) => JSX.Element;
+  };
+  sort?: {
+    sortIcon?: (sortStatus: keyof typeof SORT_STATUSES) => JSX.Element;
+  };
 }
 
 export interface TableOpenApi {
   setSort: (columnName: string, sortStatus: keyof typeof SORT_STATUSES) => void;
-  setFilter: (
-    columnName: string,
-    filterValue: string | number | (string | number)[]
-  ) => void;
-  setPage: (pageNumber: number) => void 
+  setFilter: (columnName: string, filterValue: TableStateFilterValue) => void;
+  setPage: (pageNumber: number) => void;
 }
 
 export interface TableScheme<T extends Record<string, any>> {
@@ -90,4 +98,4 @@ export interface TableScheme<T extends Record<string, any>> {
   bodyModel: ((tableData: T) => JSX.Element) | null;
 }
 
-export interface TableColumnsScheme {}
+export type NonUndefined<T> = T extends undefined ? never : T;
