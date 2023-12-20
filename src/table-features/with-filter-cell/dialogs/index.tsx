@@ -48,6 +48,7 @@ export const FilterDialogFactory = (props: Props) => {
     return (
       customDD &&
       customDD({
+        filterSetting,
         close: toggleFilterBody,
         confirm: (val: TableStateFilterValue) =>
           setState((prev) => ({

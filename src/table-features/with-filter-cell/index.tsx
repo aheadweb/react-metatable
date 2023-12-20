@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
 import { TableState, useGetTableState } from "../../providers";
-import { ColumnFilterSettings, HeaderModelSettings, NonUndefined } from "../../types";
+import {
+  ColumnFilterSettings,
+  HeaderModelSettings,
+  NonUndefined,
+} from "../../types";
 import { FilterDialogFactory } from "./dialogs";
 
 import "./index.css";
@@ -43,7 +47,12 @@ const WithFilterFeature = (props: {
       </summary>
       {isOpen && (
         <div className="filter-cell__body">
-          <FilterDialogFactory toggleFilterBody={toggleFilterBody} customDD={filterDD} id={id} filterSetting={filterSetting} />
+          <FilterDialogFactory
+            toggleFilterBody={toggleFilterBody}
+            customDD={filterDD}
+            id={id}
+            filterSetting={filterSetting}
+          />
         </div>
       )}
     </details>

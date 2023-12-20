@@ -73,9 +73,11 @@ export interface TableMetaData {
 export interface HeaderModelSettings {
   filter?: {
     filterDD?: ({
+      filterSetting,
       confirm,
       close,
     }: {
+      filterSetting: ColumnFilterSettings
       confirm: (value: TableStateFilterValue) => void;
       close: () => void;
     }) => JSX.Element;

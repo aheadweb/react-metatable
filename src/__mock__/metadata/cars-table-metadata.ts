@@ -3,11 +3,18 @@ import { TableMetaData, BaseCellTypes, FilterTypes } from "../../types";
 export const carsTableMetaData: TableMetaData = {
   brand: {
     sortable: true,
+    filter: {
+      type: FilterTypes.Enum,
+      options: ["Dodge", "Lincoln"],
+    },
     cell: {
       type: BaseCellTypes.text,
     },
   },
   model: {
+    filter: {
+      type: FilterTypes.Text,
+    },
     cell: {
       type: BaseCellTypes.text,
     },
@@ -22,8 +29,8 @@ export const carsTableMetaData: TableMetaData = {
     filter: {
       type: FilterTypes.Reference,
       fetch: {
-        fieldNameReceivedObject: 'title',
-        fieldNameToFilterValue: 'id',
+        fieldNameReceivedObject: "title",
+        fieldNameToFilterValue: "id",
         url: "http://localhost:3000/carsFuelType",
       },
     },
