@@ -1,0 +1,69 @@
+.filter-enum .filter-enum__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: auto;
+    max-height: 400px;
+  }
+  
+  .filter-cell {
+    position: relative;
+  }
+  
+  .filter-cell .filter-cell__body {
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .filter-cell .filter-cell__header {
+    list-style: none;
+  }
+  
+  .filter-cell .filter-cell__content::-webkit-details-marker {
+    display: none;
+  }
+  
+  .filter-cell .filter-cell__content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-cell .filter-cell__button {
+    cursor: pointer;
+  }
+  
+  .filter-cell .filter-cell__value {
+    margin-right: 5px;
+  }
+  
+  .filter-cell .filter-cell__button {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .filter-dialog {
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.12);
+    padding: 10px;
+  }
+  
+  .filter-dialog__body {
+    margin-bottom: 10px;
+  }
+  
+  .filter-enum__label {
+    margin-bottom: 5px;
+    word-break: break-word;
+  }
+  
+  .filter-dialog__footer-action:first-child {
+    margin-right: 30px;
+  }
+  
+  .filter-dialog__footer {
+    display: flex;
+  }
+  
