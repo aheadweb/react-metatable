@@ -1,6 +1,7 @@
 import React, { useImperativeHandle, useState } from "react";
 
-import { TableScheme, HeaderModelSettings, TableOpenApi } from "../types";
+import { TableOpenApi } from "../types";
+import {PlainObject, RowId, TableProps} from './types'
 
 import { useGetTableState } from "../providers";
 
@@ -17,28 +18,11 @@ import { Utils } from "../utils";
 import { ExpandColumn } from "./components/expand-column";
 
 import "./index.css";
+import { sliceDataViaPageSize } from "./utils";
 
-export interface TableProps<T extends Record<string, any>>
-  extends HeaderModelSettings {
-  pagination?: boolean;
-  columns: TableScheme<T>[];
-  data: T[];
-  className?: string;
-  expandable?: {
-    render: (rowData: T) => JSX.Element | string | number;
-    expandIcon?: (isOpen: boolean) => React.ReactNode;
-    isExpandRow: boolean | ((rowData: T) => boolean);
-    columnTitle?: string;
-  };
-}
 
-const sliceDataViaPageSize = <T extends Record<string, any>>(
-  data: T[],
-  pageSize: number,
-  page: number
-) => data.slice((page - 1) * pageSize, pageSize * page);
 
-export const MetaTable = <T extends Record<string, any>>(
+export const MetaTable = <T extends PlainObject>(
   props: TableProps<T>,
   ref: React.ForwardedRef<TableOpenApi>
 ) => {
@@ -49,7 +33,7 @@ export const MetaTable = <T extends Record<string, any>>(
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [expandRowId, setExpandRowId] = useState<(string | number)[]>([]);
+  const [expandRowId, setExpandRowId] = useState<RowId[]>([]);
 
   useImperativeHandle(
     ref,

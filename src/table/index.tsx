@@ -1,19 +1,19 @@
 import React from "react";
 
 import { TableOpenApi } from "../types";
+import {PlainObject} from './types'
 
 import { TableStateProvider } from "../providers";
 
-import { MetaTable, TableProps } from "./table";
+import { MetaTable } from "./table";
+import * as TableTypes from './types'
 
-const MetaTableWidthApi = React.forwardRef(MetaTable) as <
-  T extends Record<string, any>
->(
-  props: TableProps<T> & { ref?: React.ForwardedRef<TableOpenApi> }
+const MetaTableWidthApi = React.forwardRef(MetaTable) as <T extends PlainObject>(
+  props: TableTypes.TableProps<T> & { ref?: React.ForwardedRef<TableOpenApi> }
 ) => JSX.Element;
 
-const MetaTableWithStateProvider = <T extends Record<string, any>>(
-  props: TableProps<T> & { tableApi?: React.MutableRefObject<TableOpenApi> }
+const MetaTableWithStateProvider = <T extends PlainObject>(
+  props: TableTypes.TableProps<T> & { tableApi?: React.MutableRefObject<TableOpenApi> }
 ) => {
   const { tableApi, ...rest } = props;
   return (
@@ -23,4 +23,5 @@ const MetaTableWithStateProvider = <T extends Record<string, any>>(
   );
 };
 
+export {TableTypes}
 export { MetaTableWithStateProvider as MetaTable };

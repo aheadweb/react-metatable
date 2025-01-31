@@ -1,14 +1,14 @@
 import React, { useCallback } from "react";
 import { TableBodyCell } from "..";
 import { ArrowDownIcon } from "../icons";
-import { TableProps } from "../../table";
+import { TableTypes } from "../../";
 import { Utils } from "../../../utils";
 
 interface Props {
   rowId: string;
   isExpandRow: boolean;
   isOpen: boolean;
-  expandable?: TableProps<any>["expandable"];
+  expandable?: TableTypes.TableProps<any>["expandable"];
   toggleExpandRow: (value: React.SetStateAction<(string | number)[]>) => void;
 }
 
