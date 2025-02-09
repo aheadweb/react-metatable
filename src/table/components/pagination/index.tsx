@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { usePagination } from "../../../hooks";
 import { PaginationConfig } from "../../../hooks/usePagination";
-import { Menu, MenuItem } from "../../../shared/menu";
+import { Menu, MenuItem } from "../../../shared";
 
 import { ArrowDownIcon } from "../icons";
 
