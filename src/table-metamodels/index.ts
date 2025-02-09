@@ -1,1 +1,1 @@
-export { useGetTableColumns } from "./base-metamodel";
+export { useTableColumns } from "./base-metamodel";

@@ -66,7 +66,7 @@ const featuresNameToComponent: Record<
   sortable: WithSortCell,
 };
 
-export const useGetTableColumns = <T extends {}>(
+export const useTableColumns = <T extends {}>(
   props: TableMetaModelProps
 ): {
   columns: TableScheme<T>[];
