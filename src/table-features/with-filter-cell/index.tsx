@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { TableState, useGetTableState } from "../../providers";
+import { TableStateFilter } from "../../providers";
 import {
   ColumnFilterSettings,
   HeaderModelSettings,
@@ -10,6 +10,8 @@ import { FilterDialogFactory } from "./dialogs";
 
 import "./index.css";
 import { CloseFilterIcon, OpenFilterIcon } from "./icons";
+import { PlainObject } from "../../table/types";
+import { useTableFilterState } from "../../hooks";
 
 const getDefaultIcons = (isOpen: boolean) =>
   !isOpen ? <OpenFilterIcon /> : <CloseFilterIcon />;
@@ -24,7 +26,7 @@ const WithFilterFeature = (props: {
   filterDD?: NonUndefined<HeaderModelSettings["filter"]>["filterDD"];
 }) => {
   const { cellValue, id, filterSetting, icon, filterDD } = props;
-  const { state } = useGetTableState();
+  const { filter } = useTableFilterState();
   const [isOpen, setIsOpen] = useState(false);
   if (!cellValue) return null;
 
@@ -32,7 +34,7 @@ const WithFilterFeature = (props: {
 
   if (!filterSetting) return null;
 
-  const hasSomeFilter = Object.values(state.filter).some(Boolean);
+  const hasSomeFilter = Object.values(filter).some(Boolean);
   const filterIcon = icon
     ? icon(hasSomeFilter, isOpen)
     : getDefaultIcons(isOpen);
@@ -59,13 +61,13 @@ const WithFilterFeature = (props: {
   );
 };
 
-export function filterTableData<T extends Record<string, any>>(
-  state: TableState,
+export function filterTableData<T extends PlainObject>(
+  filter: TableStateFilter,
   data: T[]
 ) {
-  const [filterKey] = Object.keys(state.filter);
+  const [filterKey] = Object.keys(filter);
   if (!filterKey) return data;
-  const filterValue = state.filter[filterKey];
+  const filterValue = filter[filterKey];
   if (!filterValue) return data;
 
   if (Array.isArray(filterValue))

@@ -1,9 +1,9 @@
 import React, { useImperativeHandle, useState } from "react";
 
 import { TableOpenApi } from "../types";
-import {PlainObject, RowId, TableProps} from './types'
+import { PlainObject, RowId, TableProps } from "./types";
 
-import { useGetTableState } from "../providers";
+import { useTableFilterState, useTableSortState } from "../hooks";
 
 import {
   Pagination,
@@ -20,8 +20,6 @@ import { ExpandColumn } from "./components/expand-column";
 import "./index.css";
 import { sliceDataViaPageSize } from "./utils";
 
-
-
 export const MetaTable = <T extends PlainObject>(
   props: TableProps<T>,
   ref: React.ForwardedRef<TableOpenApi>
@@ -29,7 +27,8 @@ export const MetaTable = <T extends PlainObject>(
   const { columns, data, ...rest } = props;
   const { className, pagination, expandable, ...headerModelSettings } = rest;
 
-  const { state, setState } = useGetTableState();
+  const { sort, setState: setSortState } = useTableSortState();
+  const { filter, setState: setFilterState } = useTableFilterState();
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -38,23 +37,18 @@ export const MetaTable = <T extends PlainObject>(
   useImperativeHandle(
     ref,
     () => ({
-      setFilter: (columnName, value) =>
-        setState((prev) => ({ ...prev, filter: { [columnName]: value } })),
-      setSort: (columnName, sortStatus) =>
-        setState((prev) => ({
-          ...prev,
-          sortable: { [columnName]: sortStatus },
-        })),
+      setFilter: (columnName, value) => setFilterState((prev) => ({ ...prev, [columnName]: value })),
+      setSort: (columnName, sortStatus) => setSortState((prev) => ({...prev, [columnName]: sortStatus  })),
       setPage: (page) => setPage(page),
     }),
-    [setState]
+    []
   );
 
-  const filteredData = filterTableData(state, data);
+  const filteredData = filterTableData(filter, data);
   const slicedData = pagination
     ? sliceDataViaPageSize(filteredData, pageSize, page)
     : filteredData;
-  const sortedData = sortTableData(state, slicedData);
+  const sortedData = sortTableData(sort, slicedData);
 
   const expandRowsId =
     expandable &&

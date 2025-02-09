@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useGetTableState } from "../../../providers";
 import {
   ColumnFilterSettings,
   FilterTypes,
@@ -10,6 +9,7 @@ import {
 import { TextFilter } from "./TextFilter";
 import { EnumFilter } from "./EnumFilter";
 import { ReferenceFilter } from "./ReferenceFilter";
+import { useTableFilterState } from "../../../hooks";
 
 interface Props {
   id: string;
@@ -28,20 +28,20 @@ export const FilterDialogFactory = (props: Props) => {
   const { filterSetting, id, customDD, toggleFilterBody } = props;
   const [localeFilterValue, setLocaleFilterValue] =
     useState<TableStateFilterValue>("");
-  const { setState, state } = useGetTableState();
+  const { setState, filter } = useTableFilterState();
 
-  const [filteredColumnName] = Object.keys(state.filter);
+  const [filteredColumnName] = Object.keys(filter);
   const hasFilerOnColumn = filteredColumnName === id;
 
   const clearFilter = () => {
     if (!hasFilerOnColumn) return;
-    setState((prev) => ({ ...prev, filter: {} }));
+    setState({});
   };
 
   const setFilterValue = () =>
     setState((prev) => ({
       ...prev,
-      filter: { [id]: localeFilterValue },
+      [id]: localeFilterValue
     }));
 
   const customFilterDD = useMemo(() => {
@@ -53,7 +53,7 @@ export const FilterDialogFactory = (props: Props) => {
         confirm: (val: TableStateFilterValue) =>
           setState((prev) => ({
             ...prev,
-            filter: { [id]: val },
+            [id]: val
           })),
       })
     );

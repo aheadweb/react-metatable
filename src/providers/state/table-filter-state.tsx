@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { TableStateFilterValue } from "../../types";
 
+export type TableStateFilter = Record<string, TableStateFilterValue>;
 const DEFAULT_STATE: Record<string, TableStateFilterValue> = {};
 
 export const TableFilterStateContext = React.createContext<{
@@ -8,7 +9,6 @@ export const TableFilterStateContext = React.createContext<{
   setState: React.Dispatch<React.SetStateAction<typeof DEFAULT_STATE>>;
 }>(null!);
 
-export const useGetTableState = () => useContext(TableFilterStateContext);
 export const TableFilterStateProvider = ({
   children,
 }: {

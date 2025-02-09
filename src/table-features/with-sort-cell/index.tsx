@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
-import { TableState, useGetTableState } from "../../providers";
+import { TableStateSort } from "../../providers";
 import "./index.css";
 import { SortAskIcon, SortDescIcon, SortIcon } from "./icons";
+import { PlainObject } from "../../table/types";
+import { useTableSortState } from "../../hooks";
 
 export const SORT_STATUSES = {
   DESC: "DESC",
@@ -22,15 +24,16 @@ const getSortableKey = (prevStatus: string) => {
   return SORT_STATUSES.ASC;
 };
 
-export const sortTableData = <T extends Record<string, any>>(
-  state: TableState,
+export const sortTableData = <T extends PlainObject>(
+  sort: TableStateSort,
   data: T[]
 ) => {
-  const [sortConfig] = Object.entries(state.sortable);
+  const [sortConfig] = Object.entries(sort);
   if (!sortConfig) return data;
 
   const [propName, sortStatus] = sortConfig;
-  if (!propName || !Object.keys(SORT_STATUSES).includes(sortStatus)) return data
+  if (!propName || !Object.keys(SORT_STATUSES).includes(sortStatus))
+    return data;
   if (sortStatus === SORT_STATUSES.DEFAULT) return data;
 
   const cloneData = [...data];
@@ -51,21 +54,21 @@ const WithSortFeature = (props: {
   icon?: (sortStatus: keyof typeof SORT_STATUSES) => JSX.Element;
 }) => {
   const { cellValue, id, icon } = props;
-  const { setState, state } = useGetTableState();
+  const { setState, sort } = useTableSortState();
 
   if (!cellValue) return null;
 
   const toggleSortStatus = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      sortable: {
-        [id]: getSortableKey(prev.sortable[id]),
-      },
+      [id]: getSortableKey(prev[id]),
     }));
   }, []);
 
-  const status = state.sortable[id];
-  const sortIcon = icon ? icon(status || ARROW_MAP.DEFAULT) : (ARROW_MAP[status] || ARROW_MAP.DEFAULT)
+  const status = sort[id];
+  const sortIcon = icon
+    ? icon(status || ARROW_MAP.DEFAULT)
+    : ARROW_MAP[status] || ARROW_MAP.DEFAULT;
 
   return (
     <span className="sort-cell">
