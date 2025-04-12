@@ -15,7 +15,6 @@ export const TableSortStateProvider = ({
   children: React.ReactNode;
 }) => {
   const [sort, setState] = useState(DEFAULT_STATE);
-
   return (
     <TableSortStateContext.Provider
       value={{

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext } from "react";
 import { Utils } from "../utils";
 
 const CacheContext = createContext<ReturnType<typeof Utils.createCacheMap>>(null!);
